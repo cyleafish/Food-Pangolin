@@ -1,7 +1,8 @@
 # Food-Pangolin
 1131軟體工程期末專題
+![image](https://github.com/user-attachments/assets/31998aed-5cc6-4f74-ac08-30b59605d47f)
 
-> 感謝吳楷賀提供 https://hackmd.io/q2GW1NTCQpmxmj3Rl3zLug?view
+
 ## MVC
 ```
 project/
@@ -82,3 +83,4 @@ flowchart TB
     D -->|回傳資料| C
     C -->|渲染資料| B
 ```
+> 感謝吳楷賀提供 https://hackmd.io/q2GW1NTCQpmxmj3Rl3zLug?view
