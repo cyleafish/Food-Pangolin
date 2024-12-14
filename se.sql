@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2024-12-14 04:31:39
+-- 產生時間： 2024-12-14 06:46:01
 -- 伺服器版本： 10.4.28-MariaDB
 -- PHP 版本： 8.2.4
 
@@ -46,6 +46,7 @@ CREATE TABLE `customer` (
   `order_id` int(10) NOT NULL,
   `name` varchar(10) NOT NULL,
   `phone` int(13) NOT NULL,
+  `password` int(10) NOT NULL,
   `addr` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -58,6 +59,7 @@ CREATE TABLE `customer` (
 CREATE TABLE `deliver` (
   `deliver_id` int(10) NOT NULL,
   `deliver_name` varchar(10) NOT NULL,
+  `password` int(10) NOT NULL,
   `phone` int(13) NOT NULL,
   `star` int(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -105,6 +107,7 @@ CREATE TABLE `restaurant` (
   `manu_id` int(10) NOT NULL,
   `comment_id` int(10) NOT NULL,
   `rest_name` varchar(10) NOT NULL,
+  `password` int(10) NOT NULL,
   `addr` varchar(30) NOT NULL,
   `phone` int(13) NOT NULL,
   `time` int(4) NOT NULL
