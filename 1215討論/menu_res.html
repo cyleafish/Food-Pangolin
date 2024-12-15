@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>菜單</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            color: #333;
+            text-align: center;
+        }
+        h1 {
+            color: #4a90e2;
+        }
+        a {
+            display: inline-block;
+            margin: 10px 5px;
+            padding: 10px 20px;
+            color: white;
+            background-color: #4CAF50;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        a:hover {
+            background-color: #45a049;
+        }
+        .back-link {
+            background-color: #f44336;
+        }
+        table {
+            width: 100%;
+            max-width: 900px;
+            margin: 20px auto;
+            border-collapse: collapse;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            color: #555;
+            font-weight: bold;
+        }
+        td {
+            background-color: #fff;
+        }
+        tr:nth-child(even) td {
+            background-color: #f9f9f9;
+        }
+        .action-link {
+            color: #f7f8fa;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        .action-link:hover {
+            color: #092038;
+        }
+    </style>
+</head>
+<body>
+    <h1>上架的菜品</h1>
+    
+    <a href="add_menu.html">新增</a>
+    <a href="host_res.html" class="back-link">返回</a>
+
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>菜圖</th>
+                <th>菜名</th>
+                <th>售價</th>
+                <th>分數</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in data %}
+            <tr>
+                <td>{{ item.ac }}</td>
+                <td>{{ item.gname }}</td>
+                <td>{{ item.rp }}</td>
+                <td>{{ item.hp }}</td>
+                <td>
+                    <a href="edit_menu.html" class="action-link">編輯</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
