@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2024-12-15 14:58:26
+-- 產生時間： 2024-12-17 17:27:51
 -- 伺服器版本： 10.4.32-MariaDB
 -- PHP 版本： 8.2.12
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- 資料庫： `food pangolin`
+-- 資料庫： `food_pangolin`
 --
 
 -- --------------------------------------------------------
@@ -62,6 +62,26 @@ CREATE TABLE `customer` (
 
 INSERT INTO `customer` (`customer_id`, `name`, `phone`, `addr`) VALUES
 (1, 'kuo', '0912345678', '南投縣埔里鎮大學路1號');
+
+-- --------------------------------------------------------
+
+--
+-- 資料表結構 `customer_star`
+--
+
+CREATE TABLE `customer_star` (
+  `start_id` int(11) NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `deliver_id` int(11) NOT NULL,
+  `star` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- 傾印資料表的資料 `customer_star`
+--
+
+INSERT INTO `customer_star` (`start_id`, `customer_id`, `deliver_id`, `star`) VALUES
+(1, 1, 1, 5);
 
 -- --------------------------------------------------------
 
@@ -123,7 +143,8 @@ CREATE TABLE `menu` (
 --
 
 INSERT INTO `menu` (`menu_id`, `rest_id`, `name`, `price`, `description`) VALUES
-(1, 1, '大麥克', 80, '牛肉');
+(1, 1, '大麥克', 80, '牛肉'),
+(2, 1, '薯條', 40, '有鹽');
 
 -- --------------------------------------------------------
 
@@ -135,10 +156,8 @@ CREATE TABLE `order` (
   `order_id` int(11) NOT NULL,
   `customer_id` int(11) DEFAULT NULL,
   `rest_id` int(11) DEFAULT NULL,
-  `order_item` varchar(255) DEFAULT NULL,
-  `price` decimal(10,0) DEFAULT NULL,
   `total_price` decimal(10,0) DEFAULT NULL,
-  `date` date DEFAULT NULL,
+  `date` datetime DEFAULT current_timestamp(),
   `deliver_id` int(11) DEFAULT NULL,
   `addr` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -147,8 +166,37 @@ CREATE TABLE `order` (
 -- 傾印資料表的資料 `order`
 --
 
-INSERT INTO `order` (`order_id`, `customer_id`, `rest_id`, `order_item`, `price`, `total_price`, `date`, `deliver_id`, `addr`) VALUES
-(1, 1, 1, '大麥克', 80, 80, NULL, 1, '南投縣埔里鎮大學路1號');
+INSERT INTO `order` (`order_id`, `customer_id`, `rest_id`, `total_price`, `date`, `deliver_id`, `addr`) VALUES
+(1, 1, 1, 80, '2024-12-16 00:00:00', 1, '南投縣埔里鎮大學路1號'),
+(2, 1, 1, 160, '2024-12-17 00:00:00', NULL, '我家'),
+(3, 1, 1, 80, '2024-12-17 22:53:37', NULL, '這裡'),
+(4, 1, 1, 120, '2024-12-17 23:42:21', NULL, '那裡');
+
+-- --------------------------------------------------------
+
+--
+-- 資料表結構 `order_item`
+--
+
+CREATE TABLE `order_item` (
+  `item_id` int(11) NOT NULL,
+  `order_id` int(11) DEFAULT NULL,
+  `menu_id` int(11) DEFAULT NULL,
+  `quantity` int(11) DEFAULT NULL,
+  `price` decimal(10,0) DEFAULT NULL,
+  `note` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- 傾印資料表的資料 `order_item`
+--
+
+INSERT INTO `order_item` (`item_id`, `order_id`, `menu_id`, `quantity`, `price`, `note`) VALUES
+(1, 1, 1, 1, 80, ''),
+(2, 2, 1, 2, 80, ''),
+(3, 3, 1, 1, 80, '不要生菜'),
+(4, 4, 1, 1, 80, '不要番茄'),
+(5, 4, 2, 1, 40, '');
 
 -- --------------------------------------------------------
 
@@ -161,7 +209,7 @@ CREATE TABLE `restaurant` (
   `restname` varchar(100) NOT NULL,
   `addr` varchar(255) DEFAULT NULL,
   `phone` varchar(15) DEFAULT NULL,
-  `time` time DEFAULT NULL
+  `time` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -169,7 +217,7 @@ CREATE TABLE `restaurant` (
 --
 
 INSERT INTO `restaurant` (`rest_id`, `restname`, `addr`, `phone`, `time`) VALUES
-(1, 'McDonald', '南投縣埔里鎮信義路1037號', '0492918438', '21:28:55');
+(1, 'McDonald', '南投縣埔里鎮信義路1037號', '0492918438', '2024-12-16');
 
 -- --------------------------------------------------------
 
@@ -213,6 +261,13 @@ ALTER TABLE `customer`
   ADD PRIMARY KEY (`customer_id`);
 
 --
+-- 資料表索引 `customer_star`
+--
+ALTER TABLE `customer_star`
+  ADD PRIMARY KEY (`start_id`),
+  ADD UNIQUE KEY `customer_id` (`customer_id`,`deliver_id`);
+
+--
 -- 資料表索引 `deliver`
 --
 ALTER TABLE `deliver`
@@ -240,6 +295,14 @@ ALTER TABLE `order`
   ADD KEY `fk_customer_order` (`customer_id`),
   ADD KEY `fk_restaurant_order` (`rest_id`),
   ADD KEY `fk_deliver_order` (`deliver_id`);
+
+--
+-- 資料表索引 `order_item`
+--
+ALTER TABLE `order_item`
+  ADD PRIMARY KEY (`item_id`),
+  ADD KEY `order_id` (`order_id`),
+  ADD KEY `menu_id` (`menu_id`);
 
 --
 -- 資料表索引 `restaurant`
@@ -271,6 +334,12 @@ ALTER TABLE `customer`
   MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- 使用資料表自動遞增(AUTO_INCREMENT) `customer_star`
+--
+ALTER TABLE `customer_star`
+  MODIFY `start_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- 使用資料表自動遞增(AUTO_INCREMENT) `deliver`
 --
 ALTER TABLE `deliver`
@@ -280,13 +349,19 @@ ALTER TABLE `deliver`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `menu_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `menu_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `order`
 --
 ALTER TABLE `order`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `order_item`
+--
+ALTER TABLE `order_item`
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `restaurant`
@@ -317,6 +392,13 @@ ALTER TABLE `order`
   ADD CONSTRAINT `fk_customer_order` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`),
   ADD CONSTRAINT `fk_deliver_order` FOREIGN KEY (`deliver_id`) REFERENCES `deliver` (`deliver_id`),
   ADD CONSTRAINT `fk_restaurant_order` FOREIGN KEY (`rest_id`) REFERENCES `restaurant` (`rest_id`);
+
+--
+-- 資料表的限制式 `order_item`
+--
+ALTER TABLE `order_item`
+  ADD CONSTRAINT `order_item_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `order` (`order_id`),
+  ADD CONSTRAINT `order_item_ibfk_2` FOREIGN KEY (`menu_id`) REFERENCES `menu` (`menu_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
