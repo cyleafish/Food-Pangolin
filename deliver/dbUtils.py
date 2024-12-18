@@ -143,3 +143,80 @@ def get_delivery_address(order_id):
     connection.close()
 
     return delivery_address
+
+def update_order_status(order_id, deliver_id):
+    connection = get_db_connection()
+    cursor = connection.cursor()
+
+    try:
+        query = """
+            UPDATE `order`
+            SET status = 'accepted', deliver_id = %s
+            WHERE order_id = %s AND status = 'pending';
+        """
+        cursor.execute(query, (deliver_id, order_id))
+        connection.commit()
+
+        return cursor.rowcount > 0  # True: 更新成功, False: 訂單已被接走或不存在
+    except Exception as e:
+        connection.rollback()
+        raise e  # 將錯誤傳遞給上層處理
+    finally:
+        cursor.close()
+        connection.close()
+
+def fetch_deliver_id(user_id):
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+    query = """
+        SELECT 
+            ua.user_id,
+            ua.username,
+            ua.role,
+            d.deliver_id,
+            d.deliver_name
+        FROM user_account ua
+        LEFT JOIN deliver d ON ua.username = d.deliver_name
+        WHERE ua.role = 'deliver' AND ua.user_id = %s
+        GROUP BY d.deliver_id;
+    """
+    cursor.execute(query, (user_id,))  # 傳遞 user_id 作為參數
+    info = cursor.fetchone()
+    cursor.close()
+    connection.close()
+    return info["deliver_id"]
+
+def get_current_orders(deliver_id):
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+    query = """
+        SELECT o.order_id, o.total_price, r.restname, c.name AS customer_name, o.addr,o.status
+        FROM `order` o
+        JOIN restaurant r ON o.rest_id = r.rest_id
+        JOIN customer c ON o.customer_id = c.customer_id
+        WHERE o.deliver_id = %s AND o.status = 'accepted'
+    """
+    cursor.execute(query, (deliver_id,))
+    orders = cursor.fetchall() or []
+    
+    cursor.close()
+    connection.close()
+    return orders
+
+def get_deliver_history(deliver_id):
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+    
+    query = """
+        SELECT o.order_id, o.total_price, r.restname, c.name AS customer_name,o.status
+        FROM `order` o
+        JOIN restaurant r ON o.rest_id = r.rest_id
+        JOIN customer c ON o.customer_id = c.customer_id
+        WHERE o.deliver_id = %s AND o.status = 'completed'
+    """
+    cursor.execute(query, (deliver_id,))
+    orders = cursor.fetchall() or []
+    
+    cursor.close()
+    connection.close()
+    return orders
