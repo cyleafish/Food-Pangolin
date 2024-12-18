@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>外送員首頁</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <a href="{{ url_for('deliver_info') }}"><img src="{{ url_for('static', filename='avatar.png') }}" alt="頭像" class="avatar"></a>
+        <h1>外送員首頁</h1>
+    </header>
+    <div>
+        <form method="get" action="{{ url_for('deliver_home') }}">
+            <label>排序條件：</label>
+            <select name="order_by" onchange="this.form.submit()">
+                <option value="" {% if not request.args.get('order_by') %}selected{% endif %}>選擇排序方式</option>
+                <option value="price" {% if request.args.get('order_by') == 'price' %}selected{% endif %}>訂單金額</option>
+                <option value="star" {% if request.args.get('order_by') == 'star' %}selected{% endif %}>顧客星級</option>
+                <option value="time" {% if request.args.get('order_by', 'time') == 'time' %}selected{% endif %}>訂單時間</option>
+            </select>
+        </form>
+        <h2>待接單訂單</h2>
+        <ul>
+            {% for order in orders %}
+            <li>
+                訂單編號: {{ order['order_id'] }}, 金額: {{ order['total_price'] }}, 商家: {{ order['restname'] }}, 顧客: {{ order['name'] }}, 星級: {{ order['star'] }}
+                <a href="{{ url_for('order_info', order_id=order['order_id']) }}">查看訂單詳情</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
