@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商家應收金額</title>
+</head>
+<body>
+    <h1>商家應收金額</h1>
+    <table border="1">
+        <tr>
+            <th>商家名稱</th>
+            <th>總收入</th>
+        </tr>
+        {% for merchant in merchants %}
+        <tr>
+            <td>{{ merchant.restname }}</td>
+            <td>{{ merchant.earnings }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="/">返回首頁</a>
+</body>
+</html>

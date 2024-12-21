@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2024-12-21 10:17:22
+-- 產生時間： 2024-12-21 12:32:06
 -- 伺服器版本： 10.4.32-MariaDB
 -- PHP 版本： 8.2.12
 
@@ -53,15 +53,16 @@ CREATE TABLE `customer` (
   `customer_id` int(11) NOT NULL,
   `name` varchar(100) DEFAULT NULL,
   `phone` varchar(15) DEFAULT NULL,
-  `addr` varchar(255) DEFAULT NULL
+  `addr` varchar(255) DEFAULT NULL,
+  `email` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- 傾印資料表的資料 `customer`
 --
 
-INSERT INTO `customer` (`customer_id`, `name`, `phone`, `addr`) VALUES
-(1, 'kuo', '0912345678', '南投縣埔里鎮大學路1號');
+INSERT INTO `customer` (`customer_id`, `name`, `phone`, `addr`, `email`) VALUES
+(1, 'kuo', '0912345678', '南投縣埔里鎮大學路1號', 'kuo@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -84,7 +85,8 @@ CREATE TABLE `customer_star` (
 INSERT INTO `customer_star` (`start_id`, `customer_id`, `deliver_id`, `star`, `order_id`) VALUES
 (16, 1, 1, 1, 5),
 (18, 1, 1, 5, 2),
-(19, 1, 1, 5, 4);
+(19, 1, 1, 5, 4),
+(20, 1, 1, 4, 3);
 
 -- --------------------------------------------------------
 
@@ -172,11 +174,15 @@ CREATE TABLE `order` (
 --
 
 INSERT INTO `order` (`order_id`, `customer_id`, `rest_id`, `total_price`, `date`, `deliver_id`, `addr`, `status`, `completed_time`) VALUES
-(1, 1, 1, 80, '2024-12-16 00:00:00', NULL, '南投縣埔里鎮大學路1號', 'pending', NULL),
+(1, 1, 1, 80, '2024-12-16 00:00:00', 1, '南投縣埔里鎮大學路1號', 'accepted', NULL),
 (2, 1, 1, 160, '2024-12-17 00:00:00', 1, '我家', 'completed', '2024-12-21 17:15:40'),
-(3, 1, 1, 80, '2024-12-17 22:53:37', NULL, '這裡', 'pending', NULL),
+(3, 1, 1, 80, '2024-12-17 22:53:37', 1, '這裡', 'completed', '2024-12-21 17:29:35'),
 (4, 1, 1, 120, '2024-12-17 23:42:21', 1, '那裡', 'completed', '2024-12-21 17:16:43'),
-(5, 1, 1, 160, '2024-12-18 11:30:22', 1, '管院', 'completed', '2024-12-21 17:13:29');
+(5, 1, 1, 160, '2024-12-18 11:30:22', 1, '管院', 'completed', '2024-12-21 17:13:29'),
+(6, 1, 1, 0, '2024-12-21 17:35:54', 1, '女宿', 'accepted', NULL),
+(7, 1, 1, 0, '2024-12-21 17:39:18', 1, '123', 'accepted', NULL),
+(8, 1, 1, 0, '2024-12-21 17:55:58', 1, NULL, 'preparing', NULL),
+(9, 1, 1, 0, '2024-12-21 19:17:04', NULL, '暨南大學', 'pending', NULL);
 
 -- --------------------------------------------------------
 
@@ -265,7 +271,8 @@ ALTER TABLE `comment`
 -- 資料表索引 `customer`
 --
 ALTER TABLE `customer`
-  ADD PRIMARY KEY (`customer_id`);
+  ADD PRIMARY KEY (`customer_id`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- 資料表索引 `customer_star`
@@ -344,7 +351,7 @@ ALTER TABLE `customer`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `customer_star`
 --
 ALTER TABLE `customer_star`
-  MODIFY `start_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `start_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `deliver`
@@ -362,7 +369,7 @@ ALTER TABLE `menu`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `order`
 --
 ALTER TABLE `order`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `order_item`

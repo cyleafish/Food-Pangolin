@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>顧客應付款金額</title>
+</head>
+<body>
+    <h1>顧客應付款金額</h1>
+    <table border="1">
+        <tr>
+            <th>顧客名稱</th>
+            <th>應付款金額</th>
+        </tr>
+        {% for customer in customers %}
+        <tr>
+            <td>{{ customer.customer_name }}</td>
+            <td>{{ customer.payments }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="/">返回首頁</a>
+</body>
+</html>
