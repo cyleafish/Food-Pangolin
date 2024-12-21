@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2024-12-17 17:27:51
+-- 產生時間： 2024-12-21 10:17:22
 -- 伺服器版本： 10.4.32-MariaDB
 -- PHP 版本： 8.2.12
 
@@ -73,15 +73,18 @@ CREATE TABLE `customer_star` (
   `start_id` int(11) NOT NULL,
   `customer_id` int(11) NOT NULL,
   `deliver_id` int(11) NOT NULL,
-  `star` int(11) NOT NULL
+  `star` int(5) NOT NULL,
+  `order_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- 傾印資料表的資料 `customer_star`
 --
 
-INSERT INTO `customer_star` (`start_id`, `customer_id`, `deliver_id`, `star`) VALUES
-(1, 1, 1, 5);
+INSERT INTO `customer_star` (`start_id`, `customer_id`, `deliver_id`, `star`, `order_id`) VALUES
+(16, 1, 1, 1, 5),
+(18, 1, 1, 5, 2),
+(19, 1, 1, 5, 4);
 
 -- --------------------------------------------------------
 
@@ -159,18 +162,21 @@ CREATE TABLE `order` (
   `total_price` decimal(10,0) DEFAULT NULL,
   `date` datetime DEFAULT current_timestamp(),
   `deliver_id` int(11) DEFAULT NULL,
-  `addr` varchar(255) DEFAULT NULL
+  `addr` varchar(255) DEFAULT NULL,
+  `status` enum('pending','accepted','preparing','on_delivery','arrived','completed','cancelled') NOT NULL DEFAULT 'pending',
+  `completed_time` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- 傾印資料表的資料 `order`
 --
 
-INSERT INTO `order` (`order_id`, `customer_id`, `rest_id`, `total_price`, `date`, `deliver_id`, `addr`) VALUES
-(1, 1, 1, 80, '2024-12-16 00:00:00', 1, '南投縣埔里鎮大學路1號'),
-(2, 1, 1, 160, '2024-12-17 00:00:00', NULL, '我家'),
-(3, 1, 1, 80, '2024-12-17 22:53:37', NULL, '這裡'),
-(4, 1, 1, 120, '2024-12-17 23:42:21', NULL, '那裡');
+INSERT INTO `order` (`order_id`, `customer_id`, `rest_id`, `total_price`, `date`, `deliver_id`, `addr`, `status`, `completed_time`) VALUES
+(1, 1, 1, 80, '2024-12-16 00:00:00', NULL, '南投縣埔里鎮大學路1號', 'pending', NULL),
+(2, 1, 1, 160, '2024-12-17 00:00:00', 1, '我家', 'completed', '2024-12-21 17:15:40'),
+(3, 1, 1, 80, '2024-12-17 22:53:37', NULL, '這裡', 'pending', NULL),
+(4, 1, 1, 120, '2024-12-17 23:42:21', 1, '那裡', 'completed', '2024-12-21 17:16:43'),
+(5, 1, 1, 160, '2024-12-18 11:30:22', 1, '管院', 'completed', '2024-12-21 17:13:29');
 
 -- --------------------------------------------------------
 
@@ -196,7 +202,8 @@ INSERT INTO `order_item` (`item_id`, `order_id`, `menu_id`, `quantity`, `price`,
 (2, 2, 1, 2, 80, ''),
 (3, 3, 1, 1, 80, '不要生菜'),
 (4, 4, 1, 1, 80, '不要番茄'),
-(5, 4, 2, 1, 40, '');
+(5, 4, 2, 1, 40, ''),
+(6, 5, 1, 2, 80, '不要番茄');
 
 -- --------------------------------------------------------
 
@@ -265,7 +272,7 @@ ALTER TABLE `customer`
 --
 ALTER TABLE `customer_star`
   ADD PRIMARY KEY (`start_id`),
-  ADD UNIQUE KEY `customer_id` (`customer_id`,`deliver_id`);
+  ADD UNIQUE KEY `unique_rating` (`customer_id`,`deliver_id`,`order_id`);
 
 --
 -- 資料表索引 `deliver`
@@ -337,7 +344,7 @@ ALTER TABLE `customer`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `customer_star`
 --
 ALTER TABLE `customer_star`
-  MODIFY `start_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `start_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `deliver`
@@ -355,13 +362,13 @@ ALTER TABLE `menu`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `order`
 --
 ALTER TABLE `order`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `order_item`
 --
 ALTER TABLE `order_item`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `restaurant`

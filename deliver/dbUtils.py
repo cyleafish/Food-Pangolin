@@ -1,4 +1,5 @@
 import mysql.connector
+from datetime import datetime
 
 def get_db_connection():
     connection = mysql.connector.connect(
@@ -9,12 +10,15 @@ def get_db_connection():
     )
     return connection
 
+# JOSH: 不要開開關關->耗資源
+
 def verify_user(username, password):
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
     query = "SELECT * FROM user_account WHERE username = %s AND password = %s"
     cursor.execute(query, (username, password))
     user = cursor.fetchone()
+    
     cursor.close()
     connection.close()
     return user
@@ -26,8 +30,10 @@ def fetch_pending_orders(order_by=None):
         SELECT 
             o.order_id, 
             o.total_price, 
+            o.addr AS customer_addr,
             c.name, 
             r.restname,
+            r.addr AS restaurant_addr,
             ROUND(IFNULL(AVG(cs.star), 0), 1) AS star
         FROM `order` o
         JOIN customer c ON o.customer_id = c.customer_id
@@ -84,6 +90,7 @@ def get_order_info(order_id):
         SELECT 
             o.order_id, 
             o.total_price, 
+            o.status,
             r.restname,
             c.name AS customer_name,
             ROUND(IFNULL(AVG(cs.star), 0), 1) AS star
@@ -96,10 +103,8 @@ def get_order_info(order_id):
     """
     cursor.execute(query, (order_id,))
     order_info = cursor.fetchone()
-
     cursor.close()
     connection.close()
-    
     return order_info
 
 def get_order_details(order_id):
@@ -131,7 +136,6 @@ def get_order_details(order_id):
 def get_delivery_address(order_id):
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
-    
     # 查詢訂單送貨地址
     query = """
         SELECT addr FROM `order` WHERE order_id = %s
@@ -144,19 +148,20 @@ def get_delivery_address(order_id):
 
     return delivery_address
 
-def update_order_status(order_id, deliver_id):
+def accepted_order(order_id, deliver_id):
     connection = get_db_connection()
-    cursor = connection.cursor()
+    cursor = connection.cursor(dictionary=True)
 
     try:
         query = """
             UPDATE `order`
             SET status = 'accepted', deliver_id = %s
-            WHERE order_id = %s AND status = 'pending';
+            WHERE order_id = %s ;
         """
         cursor.execute(query, (deliver_id, order_id))
         connection.commit()
-
+        cursor.close()
+        connection.close()
         return cursor.rowcount > 0  # True: 更新成功, False: 訂單已被接走或不存在
     except Exception as e:
         connection.rollback()
@@ -190,15 +195,17 @@ def get_current_orders(deliver_id):
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
     query = """
-        SELECT o.order_id, o.total_price, r.restname, c.name AS customer_name, o.addr,o.status
+        SELECT o.order_id, o.total_price, 
+        r.restname, r.addr AS restaurant_addr,
+        c.name AS customer_name, 
+        o.addr AS customer_addr,o.status
         FROM `order` o
         JOIN restaurant r ON o.rest_id = r.rest_id
         JOIN customer c ON o.customer_id = c.customer_id
-        WHERE o.deliver_id = %s AND o.status = 'accepted'
+        WHERE o.deliver_id = %s  AND o.status != 'completed'
     """
     cursor.execute(query, (deliver_id,))
     orders = cursor.fetchall() or []
-    
     cursor.close()
     connection.close()
     return orders
@@ -206,9 +213,9 @@ def get_current_orders(deliver_id):
 def get_deliver_history(deliver_id):
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
-    
     query = """
-        SELECT o.order_id, o.total_price, r.restname, c.name AS customer_name,o.status
+        SELECT o.order_id, o.total_price, o.status,o.completed_time,
+        r.restname, c.name AS customer_name
         FROM `order` o
         JOIN restaurant r ON o.rest_id = r.rest_id
         JOIN customer c ON o.customer_id = c.customer_id
@@ -216,7 +223,72 @@ def get_deliver_history(deliver_id):
     """
     cursor.execute(query, (deliver_id,))
     orders = cursor.fetchall() or []
-    
     cursor.close()
     connection.close()
     return orders
+
+def update_order_status(order_id, new_status):
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+
+    try:
+         # 如果新狀態是 `completed`，記錄完成時間
+        if new_status == 'completed':
+            query = """
+                UPDATE `order`
+                SET `status` = %s, `completed_time` = %s
+                WHERE `order_id` = %s
+            """
+            completed_time = datetime.now()
+            cursor.execute(query, (new_status, completed_time, order_id))
+
+        else:
+            # 更新其他狀態時不修改 `completed_time`
+            query = """
+                UPDATE `order`
+                SET `status` = %s
+                WHERE `order_id` = %s
+            """
+            cursor.execute(query, (new_status, order_id))
+
+        connection.commit()
+        success = True
+
+        cursor.close()
+        connection.close()
+    except Exception as e:
+        print(f"更新訂單狀態時發生錯誤: {e}")
+        success = False
+    return success
+
+def add_customer_rating(order_id, deliver_id, rating):
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+    try:
+        # 根據 `order_id` 找到對應的 `customer_id`
+        cursor.execute("SELECT customer_id FROM `order` WHERE order_id = %s", (order_id,))
+        result = cursor.fetchone()
+        if not result:
+            print(f"[錯誤] 找不到對應的顧客ID，order_id: {order_id}")
+            return False
+        customer_id = result['customer_id']
+
+        # 插入評分，確保每個訂單有唯一的評分
+        query = """
+            INSERT INTO customer_star (customer_id, deliver_id, order_id, star) 
+            VALUES (%s, %s, %s, %s)
+        """
+        cursor.execute(query, (customer_id, deliver_id, order_id, rating))
+
+        connection.commit()
+        print(f"[成功] 評分已新增 - order_id: {order_id}, customer_id: {customer_id}, deliver_id: {deliver_id}, star: {rating}")
+        return True
+    except Exception as e:
+        print(f"[錯誤] 評分失敗，原因: {e}")
+        return customer_id, deliver_id, order_id, rating,e
+    finally:
+        cursor.close()
+        connection.close()
+
+
+
