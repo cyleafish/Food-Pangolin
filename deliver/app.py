@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for, session
-from dbUtils import (verify_user, fetch_pending_orders, fetch_deliver_info,
+from flask import Flask, render_template, request, redirect, url_for, session,flash
+from dbUtils import (get_db_connection,verify_user, fetch_pending_orders, fetch_deliver_info,
 get_order_info,get_order_details,get_delivery_address,update_order_status,
-fetch_deliver_id,get_current_orders,get_deliver_history,accepted_order,add_customer_rating)
+fetch_deliver_id,get_current_orders,get_deliver_history,accepted_order,add_customer_rating,
+register_deliver_account)
 
 
 app = Flask(__name__)
@@ -40,6 +41,33 @@ def deliver_home():
         current_orders=current_orders,
         deliver_history=deliver_history
     )
+
+@app.route('/register_deliver', methods=['GET', 'POST'])
+def register_deliver():
+    if request.method == 'POST':
+        # 從表單取得資料
+        username = request.form['username']
+        password = request.form['password']
+        phone = request.form['phone']
+        car_num = request.form['car_num']
+
+        # 檢查帳號是否已存在
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM user_account WHERE username = %s', (username,))
+        existing_user = cursor.fetchone()
+        
+
+        if existing_user:
+            flash('已經有此帳號了')  
+            return redirect(url_for('register_deliver'))
+        else:  # 帳號不存在，執行註冊
+            register_deliver_account(username, password, phone, car_num)
+            flash('註冊成功，請登入')
+            return redirect(url_for('login'))
+
+    # 如果是 GET 請求，直接顯示註冊表單
+    return render_template('register_deliver.html')
 
 
 @app.route('/deliver/info', methods=['GET'])

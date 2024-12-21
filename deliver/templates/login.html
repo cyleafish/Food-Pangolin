@@ -7,6 +7,15 @@
 </head>
 <body>
     <h1>登入</h1>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="flash-messages">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
     <form method="POST" action="{{ url_for('login') }}">
         <label for="username">帳號：</label>
         <input type="text" id="username" name="username" required>
@@ -15,6 +24,7 @@
         <input type="password" id="password" name="password" required>
         <br>
         <button type="submit">登入</button>
+        <button onclick="location.href='{{ url_for('register_deliver') }}'">註冊</button>
     </form>
 </body>
 </html>

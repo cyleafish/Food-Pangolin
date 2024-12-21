@@ -23,6 +23,33 @@ def verify_user(username, password):
     connection.close()
     return user
 
+def register_deliver_account(username, password, phone, car_num):
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+    try:
+        # 新增到 deliver 資料表
+        cursor.execute(
+            "INSERT INTO deliver (deliver_name, phone, car_num) VALUES (%s, %s, %s)",
+            (username, phone, car_num)
+        )
+        deliver_id = cursor.lastrowid  # 取得剛插入的 deliver_id
+
+        # 新增到 user_account 資料表
+        created_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        role = 'deliver'
+        cursor.execute(
+            "INSERT INTO user_account (username, password, role, created_at) VALUES (%s, %s, %s, %s)",
+            (username, password, role, created_at)
+        )
+        connection.commit()
+    except Exception as e:
+        connection.rollback()
+        raise e
+    finally:
+        cursor.close()
+        connection.close()
+
+
 def fetch_pending_orders(order_by=None):
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
@@ -156,13 +183,13 @@ def accepted_order(order_id, deliver_id):
         query = """
             UPDATE `order`
             SET status = 'accepted', deliver_id = %s
-            WHERE order_id = %s ;
+            WHERE order_id = %s AND status = 'pending';
         """
         cursor.execute(query, (deliver_id, order_id))
         connection.commit()
         cursor.close()
         connection.close()
-        return cursor.rowcount > 0  # True: 更新成功, False: 訂單已被接走或不存在
+        return True  # True: 更新成功, False: 訂單已被接走或不存在
     except Exception as e:
         connection.rollback()
         raise e  # 將錯誤傳遞給上層處理
