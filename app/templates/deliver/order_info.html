@@ -9,7 +9,7 @@
 </head>
 <body>
     <header>
-        <a href="{{ url_for('deliver_home') }}"><img src="{{ url_for('static', filename='avatar.png') }}" alt="頭像" class="avatar"></a>
+        <a href="{{ url_for('deliver.deliver_home') }}"><img src="{{ url_for('static', filename='avatar.png') }}" alt="頭像" class="avatar"></a>
         <h1>訂單詳情</h1>
     </header>
     <div>
@@ -39,6 +39,6 @@
             <button onclick="confirmOrder({{ order_info['order_id'] }})">接單</button>
         {% endif %}
     </div>
-    <a href="{{ url_for('deliver_home') }}">返回首頁</a>
+    <a href="{{ url_for('deliver.deliver_home') }}">返回首頁</a>
 </body>
 </html>

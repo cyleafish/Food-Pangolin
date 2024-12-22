@@ -9,12 +9,13 @@
 </head>
 <body>
     <header>
-        <a href="{{ url_for('deliver_info') }}"><img src="{{ url_for('static', filename='avatar.png') }}" alt="頭像" class="avatar"></a>
+        <a href="{{ url_for('deliver.deliver_info') }}"><img src="{{ url_for('static', filename='avatar.png') }}" alt="頭像" class="avatar"></a>
+        <a href="{{ url_for('auth.logout') }}">登出</a>
         <h1>外送員首頁</h1>
     </header>
     <div>
         <!-- 排序功能 -->
-        <form method="get" action="{{ url_for('deliver_home') }}">
+        <form method="get" action="{{ url_for('deliver.deliver_home') }}">
             <label>排序條件：</label>
             <select name="order_by" onchange="this.form.submit()">
                 <option value="" {% if not request.args.get('order_by') %}selected{% endif %}>選擇排序方式</option>
@@ -30,7 +31,7 @@
             {% for order in orders %}
             <li>
                 訂單編號: {{ order['order_id'] }}, 金額: {{ order['total_price'] }}, <a href="https://www.google.com/maps/dir/?api=1&destination={{ order['restaurant_addr'] }}" target= '_blank'>商家: {{ order['restname'] }}</a>, 顧客: {{ order['name'] }}, 星級: {{ order['star'] }}
-                <a href="{{ url_for('order_info', order_id=order['order_id']) }}">查看訂單詳情</a>
+                <a href="{{ url_for('deliver.order_info', order_id=order['order_id']) }}">查看訂單詳情</a>
                 <button onclick="confirmOrder({{ order['order_id'] }})">接單</button>
             </li>
             {% endfor %}
@@ -43,15 +44,15 @@
                 {% for order in current_orders %}
                 <li>
                     訂單編號: {{ order['order_id'] }}, 金額: {{ order['total_price'] }}, 商家: {{ order['restname'] }}, 顧客: {{ order['customer_name'] }}
-                    <a href="{{ url_for('order_info', order_id=order['order_id']) }}">查看訂單詳情</a>
+                    <a href="{{ url_for('deliver.order_info', order_id=order['order_id']) }}">查看訂單詳情</a>
                     <p>訂單狀態: {{ order['status'] }}
                     {% if order['status'] == 'preparing' %}
-                        <a href="{{ url_for('update_order_status_route', order_id=order['order_id'], new_status='on_delivery') }}">
+                        <a href="{{ url_for('deliver.update_order_status_route', order_id=order['order_id'], new_status='on_delivery') }}">
                             <button>已拿到餐點</button>
                         </a>
                     
                     {% elif order['status'] == 'on_delivery' %}
-                        <a href="{{ url_for('update_order_status_route', order_id=order['order_id'], new_status='arrived') }}">
+                        <a href="{{ url_for('deliver.update_order_status_route', order_id=order['order_id'], new_status='arrived') }}">
                             <button>已到達</button>
                         </a>
                     

@@ -2,17 +2,26 @@ import mysql.connector
 from mysql.connector import Error
 
 def get_db_connection():
-    try:
-        connection = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="",  # 如果有密碼請填入
-            database="food_pangolin"
-        )
-        return connection
-    except Error as err:
-        print(f"資料庫連接錯誤: {err}")
-        return None
+    connection = mysql.connector.connect(
+        host='127.0.0.1',
+        user='root',
+        password='',
+        database='food_pangolin'
+    )
+    return connection
+
+# JOSH: 不要開開關關->耗資源
+
+def verify_user(username, password):
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+    query = "SELECT * FROM user_account WHERE username = %s AND password = %s"
+    cursor.execute(query, (username, password))
+    user = cursor.fetchone()
+    
+    cursor.close()
+    connection.close()
+    return user
 
 def fetch_merchant_earnings():
     connection = get_db_connection()

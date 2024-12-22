@@ -1,40 +1,36 @@
-from flask import Flask, render_template, request, redirect, url_for, session,flash
-from dbUtils import (get_db_connection,verify_user, fetch_pending_orders, fetch_deliver_info,
+from flask import Flask,Blueprint, render_template, request, redirect, url_for, session,flash
+from app.dbUtils.deliver_dbUtils import (get_db_connection,verify_user, fetch_pending_orders, fetch_deliver_info,
 get_order_info,get_order_details,get_delivery_address,update_order_status,
 fetch_deliver_id,get_current_orders,get_deliver_history,accepted_order,add_customer_rating,
 register_deliver_account)
 
 
-app = Flask(__name__)
-app.secret_key = 'your_secret_key'
+# 創建 Blueprint
+deliver_bp = Blueprint('deliver', __name__, template_folder='../templates/deliver')
 
-@app.route('/', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-        user = verify_user(username, password)
-        if user:
-            session['user_id'] = user['user_id']
-            session['role'] = user['role']
-            session['username'] = user['username']
-            if user['role'] == 'deliver':
-                return redirect(url_for('deliver_home'))
-        return "登入失敗，請檢查帳號密碼"
-    return render_template('login.html')
+# @deliver_bp.route('/', methods=['GET', 'POST'])
+# def login():
+#     if request.method == 'POST':
+#         username = request.form.get('username')
+#         password = request.form.get('password')
+#         user = verify_user(username, password)
+#         if user:
+#             session['user_id'] = user['user_id']
+#             session['role'] = user['role']
+#             session['username'] = user['username']
+#             if user['role'] == 'deliver':
+#                 return redirect(url_for('deliver_home'))
+#         return "登入失敗，請檢查帳號密碼"
+#     return render_template('login.html')
 
-@app.route('/deliver_home')
+@deliver_bp.route('/deliver_home')
 def deliver_home():
-    user_id = session.get('user_id')  
+    user_id = session.get('user_id')
     deliver_id = fetch_deliver_id(user_id)
     order_by = request.args.get('order_by', 'time')
-    # 待接單訂單
     orders = fetch_pending_orders(order_by)
-    # 目前接的訂單
     current_orders = get_current_orders(deliver_id)
-    # 歷史訂單
     deliver_history = get_deliver_history(deliver_id)
-
     return render_template(
         'deliver_home.html',
         orders=orders,
@@ -42,7 +38,8 @@ def deliver_home():
         deliver_history=deliver_history
     )
 
-@app.route('/register_deliver', methods=['GET', 'POST'])
+
+@deliver_bp.route('/register_deliver', methods=['GET', 'POST'])
 def register_deliver():
     if request.method == 'POST':
         # 從表單取得資料
@@ -70,7 +67,7 @@ def register_deliver():
     return render_template('register_deliver.html')
 
 
-@app.route('/deliver/info', methods=['GET'])
+@deliver_bp.route('/deliver/info', methods=['GET'])
 def deliver_info():
     if session.get('role') != 'deliver':
         return redirect(url_for('login'))
@@ -78,7 +75,7 @@ def deliver_info():
     info = fetch_deliver_info(user_id)
     return render_template('deliver_info.html',info=info,deliver_id=user_id)
 
-@app.route('/order_info/<int:order_id>')
+@deliver_bp.route('/order_info/<int:order_id>')
 def order_info(order_id):
     # 獲取訂單基本資訊
     order_info = get_order_info(order_id)
@@ -94,7 +91,7 @@ def order_info(order_id):
                            order_details=order_details,
                            delivery_address=delivery_address)
 
-@app.route('/accept_order', methods=['GET'])
+@deliver_bp.route('/accept_order', methods=['GET'])
 def accept_order():
     # 獲取訂單 ID 和外送員的 deliver_id
     order_id = request.args.get('order_id')
@@ -115,7 +112,7 @@ def accept_order():
     except Exception as e:
         return f"發生錯誤：{e}", 500
 
-@app.route('/update_order_status/<int:order_id>/<new_status>', methods=['GET'])
+@deliver_bp.route('/update_order_status/<int:order_id>/<new_status>', methods=['GET'])
 def update_order_status_route(order_id, new_status):
     if session.get('role') != 'deliver':
         return redirect(url_for('login'))
@@ -126,7 +123,7 @@ def update_order_status_route(order_id, new_status):
     else:
         return "狀態更新失敗", 500
 
-@app.route('/rate_customer_and_complete/<int:order_id>', methods=['POST'])
+@deliver_bp.route('/rate_customer_and_complete/<int:order_id>', methods=['POST'])
 def rate_customer_and_complete(order_id):
     if session.get('role') != 'deliver':
         return redirect(url_for('login'))
@@ -151,5 +148,3 @@ def rate_customer_and_complete(order_id):
     return redirect(url_for('deliver_home'))
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
