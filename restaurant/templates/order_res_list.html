@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>所有訂單</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #4a90e2;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            max-width: 1000px;
+            border-collapse: collapse;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+        thead th {
+            background-color: #4a90e2;
+            color: white;
+            font-weight: bold;
+            padding: 12px 15px;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px 15px;
+            text-align: left;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+        a.view-link {
+            color: #4CAF50;
+            font-weight: bold;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        a.view-link:hover {
+            color: #388e3c;
+        }
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #f44336;
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .back-button:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <h1>所有訂單</h1>
+    <table id="orderTable">
+        <thead>
+            <tr>
+                <th>訂單編號</th>
+                <th>下訂單的時間</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>001</td>
+                <td>2024-12-15 14:30:00</td>
+                <td><a href="order_res.html" class="view-link">查看訂單</a></td>
+            </tr>
+        </tbody>
+    </table>
+    <a href="/home" class="back-button">返回首頁</a>
+</body>
+</html>

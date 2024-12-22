@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>編輯菜品</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: #333;
+        }
+        h2 {
+            color: #4a90e2;
+            margin-bottom: 20px;
+        }
+        form {
+            width: 100%;
+            max-width: 400px;
+            margin: 10px auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+        .save-button {
+            background-color: #4CAF50;
+            margin-bottom: 10px;
+        }
+        .save-button:hover {
+            background-color: #45a049;
+        }
+        .delete-button {
+            background-color: #f44336;
+            width: 100%;
+        }
+        .delete-button:hover {
+            background-color: #d32f2f;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #4a90e2;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h2>編輯菜品</h2>
+
+    <!-- 編輯物品的表單 -->
+
+    <form action="/update_menu" method="post">
+        <input type="hidden" id="menu_id" name="menu_id" value="{{ item.menu_id }}">
+
+        <label for="name">菜名</label>
+        <input type="text" id="name" name="name" value="{{ item.name }}" required>
+
+        <label for="price">單價</label>
+        <input type="number" id="price" name="price" value="{{ item.price }}" required>
+
+        <label for="description">內容</label>
+        <input type="text" id="description" name="description" value="{{ item.description }}" required>
+
+        <!-- <label for="gc">示意圖</label>
+        <input type="text" id="gc" name="gc" value="{{ item.gc }}" required>
+        <input type="file" id="gcFile" name="gcFile" accept="image/*"> -->
+
+        <!-- 保存變更按鈕 -->
+        <button type="submit" class="save-button">保存變更</button>
+    </form>
+
+    <!-- 刪除物品的表單 -->
+    <form action="/delete_menu" method="post">
+        <input type="hidden" name="menu_id" value="{{ item.menu_id }}">
+        <button type="submit" class="delete-button">刪除菜品</button>
+    </form>
+
+    <!-- 返回按鈕 -->
+    <a href="/menu_res" class="back-link">取消並返回</a>
+</body>
+</html>
