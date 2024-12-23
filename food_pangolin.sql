@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2024-12-23 09:59:01
+-- 產生時間： 2024-12-23 10:21:12
 -- 伺服器版本： 10.4.32-MariaDB
 -- PHP 版本： 8.2.12
 
@@ -173,7 +173,7 @@ CREATE TABLE `order` (
   `date` datetime DEFAULT current_timestamp(),
   `deliver_id` int(11) DEFAULT NULL,
   `addr` varchar(255) DEFAULT NULL,
-  `status` enum('order','pending','accepted','preparing','on_delivery','arrived','completed','cancelled') NOT NULL DEFAULT 'order',
+  `status` enum('order','pending','accepted','prepared','on_delivery','arrived','completed','cancelled') NOT NULL DEFAULT 'order',
   `completed_time` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -189,7 +189,7 @@ INSERT INTO `order` (`order_id`, `customer_id`, `rest_id`, `total_price`, `date`
 (5, 1, 1, 160, '2024-12-18 11:30:22', 1, '管院', 'completed', '2024-12-21 17:13:29'),
 (6, 1, 1, 0, '2024-12-21 17:35:54', 1, '女宿', 'accepted', NULL),
 (7, 1, 1, 0, '2024-12-21 17:39:18', 1, '123', 'accepted', NULL),
-(8, 1, 1, 0, '2024-12-21 17:55:58', 1, NULL, 'preparing', NULL),
+(8, 1, 1, 0, '2024-12-21 17:55:58', 1, NULL, '', NULL),
 (9, 1, 1, 0, '2024-12-21 19:17:04', 1, '暨南大學', 'completed', '2024-12-21 22:29:16'),
 (10, 1, 1, 0, '2024-12-22 19:29:55', NULL, '我加', 'pending', NULL);
 
