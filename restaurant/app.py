@@ -3,7 +3,6 @@ from flask import Flask, render_template, request, session, redirect
 from functools import wraps
 from dbUtils import getList
 from dbUtils import addmenu
-from dbUtils import getrest_id
 from dbUtils import register_user
 from dbUtils import getmenuedit
 from dbUtils import get_all_menu
@@ -12,6 +11,9 @@ from dbUtils import delete_menu
 from dbUtils import get_resturant_info
 from dbUtils import update_rest
 from dbUtils import getrestid
+from dbUtils import getorderlist
+from dbUtils import getcomplite
+from dbUtils import getprocessing
 
 
 # creates a Flask application, specify a static folder on /
@@ -119,10 +121,9 @@ def ggggidsw():
     price = str(request.form['price'])
     description = str(request.form['description'])
     print(name, price, description)  # 檢查 name, price, description 是否正確e
-    rest_id = str(session['rest_id'])
+    rest_id = session['rest_id']
     print(rest_id)
     file = request.files['itemImage']
-
     
     print(rest_id)
 
@@ -141,26 +142,6 @@ def ggggidsw():
     else:
         return '不允許的檔案類型'
 
-
-#新增菜單
-# @app.route('/add_menu')
-# @login_required
-# def ggggh():
-#     return render_template('add_menu.html')
-
-# @app.route('/ad_menu', methods=['POST'])
-# @login_required
-# def ggggidsw():
-#     form = request.form
-#     name = str(form['name'])
-#     price = int(form['price'])
-#     description = str(form['description'])
-#     img = str(form['img'])
-#     rest_id = getrest_id(session['loginID'])
-#     data = [rest_id, name, price, description, img ]
-#     addmenu(data)
-    
-#     return redirect(f'/menu_res')  # 將 gid 傳遞到 /adddb
 
 
 #編輯
@@ -207,7 +188,7 @@ def fscafea():
     print()
     data = {
         'rest_id': request.form['rest_id'],
-        'username': request.form['username'],		
+        'restname': request.form['restname'],		
         'phone': request.form['phone'],
         'addr': request.form['addr']
     }
@@ -215,6 +196,42 @@ def fscafea():
     update_rest(data['rest_id'],data)
     
     return redirect('/host_res')
+
+
+@app.route("/order_res_host")  # 只允許 POST 方法
+@login_required
+def order_function():
+    return render_template('order_res_host.html')
+
+
+#看所有訂單
+@app.route("/order_res_list", methods=['POST', 'GET'])  # 只允許 POST 方法
+@login_required
+def printorder():
+    rest_id = session['rest_id']
+    items = getorderlist(rest_id)  # 獲取菜單項目的資料
+    print(items)
+    return render_template('order_res_list.html', data=items)
+
+
+
+#看所有完成訂單
+@app.route("/order_res_complete", methods=['POST', 'GET'])  # 只允許 POST 方法
+@login_required
+def printordercompleteqq():
+    rest_id = session['rest_id']
+    items = getcomplite(rest_id)  # 獲取菜單項目的資料
+    print(items)
+    return render_template('order_res_complite.html', data=items)
+
+#看所有處理中訂單
+@app.route("/order_res_processing", methods=['POST', 'GET'])  # 只允許 POST 方法
+@login_required
+def printordercomplete():
+    rest_id = session['rest_id']
+    items = getprocessing(rest_id)  # 獲取菜單項目的資料
+    print(items)
+    return render_template('order_res_processing.html', data=items)
 
 
 # #競標、全部資料

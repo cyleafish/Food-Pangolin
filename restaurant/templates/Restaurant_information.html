@@ -74,8 +74,8 @@
     {% if data %}
     <form action="/edit_restaurant" method="post">
       <input type="hidden" id="rest_id" name="rest_id" value="{{ data[0].rest_id }}">
-      <label for="username">餐廳名</label>
-      <input type="text" id="username" name="username" value="{{ data[0].username }}" required>
+      <label for="restname">餐廳名</label>
+      <input type="text" id="restname" name="restname" value="{{ data[0].restname }}" required>
       <label for="phone">電話</label>
       <input type="number" id="phone" name="phone" value="{{ data[0].phone }}" required>
       <label for="addr">地址</label>

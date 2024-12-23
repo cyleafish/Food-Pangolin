@@ -71,7 +71,7 @@
     </style>
 </head>
 <body>
-    <h1>所有未處理的訂單</h1>
+    <h1>所有完成訂單</h1>
     <a href="/order_res_host" class="back-link">返回</a>
 
     <table id="dataTable">
@@ -83,7 +83,7 @@
                 <th>總價</th>
                 <th>外送員編號</th>
                 <th>狀態</th>
-                <th>操作</th>
+                <th>完成的時間</th>
             </tr>
         </thead>
         <tbody>
@@ -97,7 +97,7 @@
                 <td>{{ item.status }}</td>
             
                 <td>
-                    <a href="/edit_order?order_id={{ item.order_id }}" class="bid-link">修改訂單</a>
+                    {{ item.completed_time }}
                 </td>
             </tr>
             {% endfor %}
