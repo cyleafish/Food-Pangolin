@@ -36,60 +36,47 @@ def register_user(data):
 
 #查看菜單
 def get_all_menu(username):
-	sql='SELECT menu_id,img, name, price, description FROM menu INNER JOIN restaurant ON menu.rest_id = restaurant.rest_id INNER JOIN user_account ON restaurant.user_id = user_account.user_id  where user_account.username=%s;'
+	sql='SELECT menu_id,filename, name, price, description FROM menu INNER JOIN restaurant ON menu.rest_id = restaurant.rest_id INNER JOIN user_account ON restaurant.user_id = user_account.user_id  where user_account.username=%s;'
 	param=(username,)
 	cursor.execute(sql,param)
 	return cursor.fetchall()
 
+#取得目前餐廳id
+def getrestid(username,password):
+    sql = "SELECT restaurant.rest_id FROM `restaurant` INNER JOIN user_account ON restaurant.user_id = user_account.user_id WHERE user_account.username = %s && user_account.password = %s;"
+    param = (username,password,)
+    cursor.execute(sql, param)
+    result = cursor.fetchone()  # 获取结果
 
-#查看自己的
-def get_all_good(ac):
-	sql='SELECT ac, ginfo.gid, ginfo.gname, ginfo.rp, ginfo.hp, ginfo.gc FROM db INNER JOIN acinfo ON db.aid = acinfo.aid INNER JOIN ginfo ON db.gid = ginfo.gid where ac=%s;'
-	param=(ac,)
-	cursor.execute(sql,param)
-	return cursor.fetchall()
+    if result:
+        return result  # 如果有结果则返回
+    else:
+        return None  # 否则返回 None
+
 
 #取得目前餐廳id
 def getrest_id(rest_id):
-    sql = "SELECT r.rest_id FROM menu m INNER JOIN restaurant r ON m.rest_id = r.rest_id INNER JOIN user_account ua ON r.user_id = ua.user_id WHERE ua.username = %s"
+    sql = "SELECT restaurant.rest_id FROM `restaurant` INNER JOIN `menu` on restaurant.rest_id=menu.rest_id INNER JOIN user_account ON restaurant.user_id = user_account.user_id WHERE user_account.username = %s;"
     param = (rest_id,)
     cursor.execute(sql, param)
-    return cursor.fetchone()
-# def getrest_id(rest_id):
-#     sql = "SELECT rest_id FROM menu inner join restaurant on menu.rest_id = restaurant.rest_id inner join user_account on restaurant.user_id = user_account.user_id WHERE user_account.username = %s"
-#     param = (rest_id,)
-#     cursor.execute(sql, param)
-#     return cursor.fetchone()
+    result = cursor.fetchone()  # 获取结果
 
+    if result:
+        return result  # 如果有结果则返回
+    else:
+        return None  # 否则返回 None
+    
 #新增菜單
-def addmenu(data):
-    sql = "INSERT INTO menu (rest_id, name, price, description, img) VALUES (%s, %s, %s, %s, %s);"  # 新增 img 欄位
-    param = tuple(data)
+def addmenu(rest_id, name, price, description, filename):
+    restid=rest_id
+    print(restid,5412)
+    sql = "INSERT INTO menu (rest_id, name, price, description, filename) VALUES (%s, %s, %s, %s, %s);"  # 新增 img 欄位
+    param = (restid, name, price, description, filename)
     cursor.execute(sql, param)
     conn.commit()
+
     return 
 
-# #新增的
-# def add(data):
-#     sql = "INSERT INTO ginfo (gname, gc, rp) VALUES (%s, %s, %s);"
-#     param = tuple(data)
-#     cursor.execute(sql, param)
-#     conn.commit()
-#     return cursor.lastrowid  # 返回新插入資料的 gid
-
-# def getaid(ac,):
-# 	sql="SELECT aid FROM acinfo where ac=%s ;"
-# 	param=(ac,)
-# 	cursor.execute(sql,param)
-# 	result = cursor.fetchone()
-# 	return result['aid']#確定指傳回一個值
-
-# def adddb(data):
-# 	sql="insert into db (aid,gid) VALUES (%s, %s);"
-# 	param=tuple(data)
-# 	cursor.execute(sql,param)
-# 	conn.commit()
-# 	return
 
 #修改的
 def getmenuedit(menu_id):
@@ -106,6 +93,25 @@ def update_menu(menu_id, data):
     conn.commit()	
 	
     return
+
+
+#餐廳資訊
+def get_resturant_info(rest_id):
+	sql='SELECT restaurant.rest_id, restaurant.username, restaurant.phone, restaurant.addr FROM `restaurant` INNER JOIN user_account ON restaurant.user_id = user_account.user_id WHERE user_account.username =%s;'
+	param=(rest_id,)
+	cursor.execute(sql,param)
+	return cursor.fetchall()
+
+
+#更新餐廳資訊
+def update_rest(rest_id, data):
+    sql = "UPDATE restaurant SET username=%s, phone=%s, addr=%s WHERE rest_id=%s"
+    params = (data['username'], data['phone'], data['addr'], rest_id)
+    cursor.execute(sql, params)
+    conn.commit()	
+	
+    return
+
 
 #刪除
 def delete_menu(menu_id):

@@ -9,6 +9,10 @@ from dbUtils import getmenuedit
 from dbUtils import get_all_menu
 from dbUtils import update_menu
 from dbUtils import delete_menu
+from dbUtils import get_resturant_info
+from dbUtils import update_rest
+from dbUtils import getrestid
+
 
 # creates a Flask application, specify a static folder on /
 app = Flask(__name__, static_folder='static',static_url_path='/')
@@ -52,8 +56,11 @@ def login():
     id = form['username']
     password =form['password']
     data=getList(id)
+    print(id, password)
+    dataa=getrestid(id,password)
     if data and data['password']==str(password) and data['role'] == 'restaurant':
         session['loginID'] = id
+        session['rest_id'] = dataa
         return redirect('/host_res')
     else:
         session['loginID'] = False
@@ -108,25 +115,27 @@ def ggggfsfsh():
 @app.route('/ad_menu', methods=['POST'])
 @login_required
 def ggggidsw():
-    if 'itemImage' not in request.files:
-        return '沒有上傳檔案'
-
+    name = str(request.form['name'])
+    price = str(request.form['price'])
+    description = str(request.form['description'])
+    print(name, price, description)  # 檢查 name, price, description 是否正確e
+    rest_id = str(session['rest_id'])
+    print(rest_id)
     file = request.files['itemImage']
-    if file.filename == '':
-        return '沒有選擇檔案'
+
+    
+    print(rest_id)
 
     if file and allowed_file(file.filename):
         # ⚠️  移除 secure_filename() 和 uuid.uuid4()
         filename = file.filename  
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(file_path)
-        name = str(request.form['itemName'])
-        price = int(request.form['itemBasePrice'])
-        description = str(request.form['itemDesc'])
-        rest_id = getrest_id(session['loginID'])
+        print(rest_id)
 
-        data = [rest_id, name, price, description, filename]  # 儲存檔名
-        addmenu(data)
+        # data = (rest_id, name, price, description, filename)  # 儲存檔名
+        addmenu(rest_id, name, price, description, filename)
+        print(rest_id)
         
         return redirect('/menu_res')  
     else:
@@ -153,96 +162,60 @@ def ggggidsw():
     
 #     return redirect(f'/menu_res')  # 將 gid 傳遞到 /adddb
 
-# #新增
-# @app.route('/add')
-# @login_required
-# def gggsadxgh():
-#     return render_template('add.html')
-
-# @app.route('/ad', methods=['POST'])
-# @login_required
-# def ggggi():
-#     form = request.form
-#     itemName = str(form['itemName'])
-#     itemDesc = str(form['itemDesc'])
-#     itemBasePrice = str(form['itemBasePrice'])
-    
-#     data = [itemName, itemDesc, itemBasePrice]
-#     addmenu(data) 
-    
-#     return redirect('/add_menu')  # 將 gid 傳遞到 /adddb
-
-# @app.route('/adddb', methods=['GET', 'POST'])
-# @login_required
-# def ggggis():
-#     ac = session['loginID']
-	
-#     gid = int(request.args.get('gid'))  # 從 URL 參數獲取 gid
-#     aid=getaid(ac)
-#     data=(aid,gid)
-#     adddb(data)
-    
-#     return redirect('/myinfo')
-
-# #編輯
-# @app.route("/edit_res/<int:menu_id>", methods=['GET'])  # 只允許 GET 方法獲取資料
-# @login_required
-# def edit_menu_item(menu_id):
-#     print(menu_id)  # 檢查 menu_id 是否正確
-#     item = getmenuedit(menu_id)  # 獲取菜單項目的資料
-#     print(item)  # 檢查 item 是否正確
-#     return render_template('edit_menu.html', item=item)
-
-# @app.route("/update_menu/<int:menu_id>", methods=['POST'])
-# @login_required
-# def update_menu_item(menu_id):  # 修改函式名稱
-#     data = {
-#         'name': request.form['name'],       
-#         'price': request.form['price'],
-#         'description': request.form['description']
-#     }
-#     update_menu(menu_id, data)  # 修正函式呼叫
-#     return redirect('/menu_res')
-
-# #刪除
-# @app.route("/delete_menu/<int:menu_id>", methods=['POST'])
-# @login_required
-# def delete_item(menu_id):
-#     if menu_id:
-#         delete_menu(menu_id)  # 使用正確的函式名稱
-#     return redirect('/menu_res')
-
 
 #編輯
 @app.route("/edit_res/<int:menu_id>", methods=['POST', 'GET'])  # 只允許 POST 方法
 @login_required
 def edit_menu_item(menu_id):
-    print(menu_id)  # 檢查 menu_id 是否正確
     item = getmenuedit(menu_id)  # 獲取菜單項目的資料
-    print(item)  # 檢查 item 是否正確
     return render_template('edit_menu.html', item=item)
 
-@app.route("/update_menu/<int:menu_id>", methods=['POST','GET'])
+@app.route("/update_menu", methods=['POST','GET'])
 @login_required
-def h12(menu_id):
-    menu_id = request.form.get("menu_id")  # 從表單獲取 gid
-    
+def h12():
+    print()
     data = {
+        'menu_id': request.form['menu_id'],
         'name': request.form['name'],		
         'price': request.form['price'],
         'description': request.form['description']
     }
-    update_menu(data[menu_id],data)
+    update_menu(data['menu_id'],data)
     return redirect('/menu_res')
 
 #刪除
-@app.route("/delete_menu/<int:menu_id>", methods=['POST','GET'])
+@app.route("/delete_menu", methods=['POST','GET'])
 @login_required
-def delete_item(menu_id):
-    menu_id = request.form.get("menu_id")  # 從表單獲取 gid
+def delete_item():
+    menu_id = request.form['menu_id']
     if menu_id:
         delete_menu(menu_id)
     return redirect('/menu_res')
+
+#看餐廳資訊
+@app.route('/Restaurant', methods=['GET','POST'])
+@login_required
+def restaurant_info():
+    username = session['loginID']
+    data = get_resturant_info(username)
+    return render_template("/Restaurant_information.html", data=data)
+
+#更新資料
+@app.route("/edit_restaurant", methods=['POST','GET'])
+@login_required
+def fscafea():
+    print()
+    data = {
+        'rest_id': request.form['rest_id'],
+        'username': request.form['username'],		
+        'phone': request.form['phone'],
+        'addr': request.form['addr']
+    }
+    print(data)
+    update_rest(data['rest_id'],data)
+    
+    return redirect('/host_res')
+
 
 # #競標、全部資料
 # @app.route('/all', methods=['GET','POST'])

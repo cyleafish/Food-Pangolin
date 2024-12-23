@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>餐廳資訊</title>
+    <style>
+      body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        background-color: #f7f3e8;
+        color: #333;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 30px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+
+      table,
+      th,
+      td {
+        border: 1px solid #ddd;
+      }
+
+      th,
+      td {
+        padding: 12px;
+        text-align: center;
+      }
+
+      th {
+        background-color: #f4b084;
+      }
+
+      tr:hover {
+        background-color: #f9e6d1;
+      }
+
+      .btn-container {
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      .btn-back {
+        padding: 10px 20px;
+        background-color: #d9534f;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+      }
+
+      .btn-back:hover {
+        background-color: #c9302c;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>餐廳資訊</h2>
+    {% if data %}
+    <form action="/edit_restaurant" method="post">
+      <input type="hidden" id="rest_id" name="rest_id" value="{{ data[0].rest_id }}">
+      <label for="username">餐廳名</label>
+      <input type="text" id="username" name="username" value="{{ data[0].username }}" required>
+      <label for="phone">電話</label>
+      <input type="number" id="phone" name="phone" value="{{ data[0].phone }}" required>
+      <label for="addr">地址</label>
+      <input type="text" id="addr" name="addr" value="{{ data[0].addr }}" required>
+      <button type="submit" class="save-button">保存變更</button>
+    </form>
+    {% endif %}
+    <a href="/host_res" class="back-link">取消並返回</a>
+  </body>
+</html>

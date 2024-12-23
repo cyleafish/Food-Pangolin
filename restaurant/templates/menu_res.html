@@ -83,7 +83,7 @@
         <tbody>
             {% for item in data %}
             <tr>
-                <td><img src="{{ url_for('static', filename=item.img) }}" alt="{{ item.name }}"></td>
+                <td><img src="{{ url_for('static', filename=item.filename) }}" alt="{{ item.name }}"></td>
                 <td>{{ item.name }}</td>
                 <td>{{ item.price }}</td>
                 <td>{{ item.description }}</td>
@@ -91,7 +91,7 @@
                 <td>
                     <form action="/edit_res/{{ item.menu_id }}" method="post">  
                         <input type="hidden" name="menu_id" value="{{ item.menu_id }}">
-                        <button type="submit" class="action-link">編輯</button>
+                        <button type="submit" class="action-link" style="background-color: #FF0000;">編輯</button>
                     </form>
                 </td>
             </tr> 
