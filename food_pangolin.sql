@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2024-12-21 12:32:06
--- 伺服器版本： 10.4.32-MariaDB
--- PHP 版本： 8.2.12
+-- 產生時間： 2024-12-23 05:33:25
+-- 伺服器版本： 10.4.28-MariaDB
+-- PHP 版本： 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -140,16 +140,17 @@ CREATE TABLE `menu` (
   `rest_id` int(11) NOT NULL,
   `name` varchar(100) DEFAULT NULL,
   `price` decimal(10,0) DEFAULT NULL,
-  `description` text DEFAULT NULL
+  `description` text DEFAULT NULL,
+  `filename` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- 傾印資料表的資料 `menu`
 --
 
-INSERT INTO `menu` (`menu_id`, `rest_id`, `name`, `price`, `description`) VALUES
-(1, 1, '大麥克', 80, '牛肉'),
-(2, 1, '薯條', 40, '有鹽');
+INSERT INTO `menu` (`menu_id`, `rest_id`, `name`, `price`, `description`, `filename`) VALUES
+(1, 1, '大麥克', 80, '牛肉', ''),
+(2, 1, '薯條', 40, '有鹽', '');
 
 -- --------------------------------------------------------
 
@@ -219,6 +220,7 @@ INSERT INTO `order_item` (`item_id`, `order_id`, `menu_id`, `quantity`, `price`,
 
 CREATE TABLE `restaurant` (
   `rest_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `restname` varchar(100) NOT NULL,
   `addr` varchar(255) DEFAULT NULL,
   `phone` varchar(15) DEFAULT NULL,
@@ -229,8 +231,8 @@ CREATE TABLE `restaurant` (
 -- 傾印資料表的資料 `restaurant`
 --
 
-INSERT INTO `restaurant` (`rest_id`, `restname`, `addr`, `phone`, `time`) VALUES
-(1, 'McDonald', '南投縣埔里鎮信義路1037號', '0492918438', '2024-12-16');
+INSERT INTO `restaurant` (`rest_id`, `user_id`, `restname`, `addr`, `phone`, `time`) VALUES
+(1, 0, 'McDonald', '南投縣埔里鎮信義路1037號', '0492918438', '2024-12-16');
 
 -- --------------------------------------------------------
 
