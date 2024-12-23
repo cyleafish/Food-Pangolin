@@ -12,6 +12,8 @@ def get_db_connection():
 
 # JOSH: 不要開開關關->耗資源
 
+
+"""
 def verify_user(username, password):
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
@@ -48,6 +50,8 @@ def register_deliver_account(username, password, phone, car_num):
     finally:
         cursor.close()
         connection.close()
+
+"""
 
 
 def fetch_pending_orders(order_by=None):
