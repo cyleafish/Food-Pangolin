@@ -46,7 +46,7 @@
                     訂單編號: {{ order['order_id'] }}, 金額: {{ order['total_price'] }}, 商家: {{ order['restname'] }}, 顧客: {{ order['customer_name'] }}
                     <a href="{{ url_for('deliver.order_info', order_id=order['order_id']) }}">查看訂單詳情</a>
                     <p>訂單狀態: {{ order['status'] }}
-                    {% if order['status'] == 'preparing' %}
+                    {% if order['status'] == 'prepared' %}
                         <a href="{{ url_for('deliver.update_order_status_route', order_id=order['order_id'], new_status='on_delivery') }}">
                             <button>已拿到餐點</button>
                         </a>
@@ -73,17 +73,7 @@
         </ul>
 
     
-        
-        <!-- 歷史訂單 -->
-        <h2>歷史訂單</h2>
-        <ul>
-            {% for history in deliver_history %}
-            <li>
-                訂單編號: {{ history['order_id'] }}, 金額: {{ history['total_price'] }}, 商家: {{ history['restname'] }}, 顧客: {{ history['customer_name'] }}, 完成時間: {{ history['completed_time'] }}
-                <!-- <button onclick="openRatingModal({{ history['order_id'] }})">評論</button> -->
-            </li>
-            {% endfor %}
-        </ul>
+        <a href="{{ url_for('deliver.history_order') }}">歷史訂單</a>
         
         <!-- 評分模態框 -->
         <div id="ratingModal" style="display: none;">

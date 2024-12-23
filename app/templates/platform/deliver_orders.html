@@ -7,13 +7,24 @@
 </head>
 <body>
     <h1>外送小哥接單數</h1>
+    <!-- 排序功能 -->
+    <form method="get" action="{{ url_for('platform.deliver_orders') }}">
+        <label for="order_by">排序條件：</label>
+        <select name="order_by" id="order_by" onchange="this.form.submit()">
+            <option value="deliver_id" {% if request.args.get('order_by') == 'deliver_id' %}selected{% endif %}>外送員 ID</option>
+            <option value="orders" {% if request.args.get('order_by') == 'orders' %}selected{% endif %}>訂單數</option>
+        </select>
+    </form>
+    
     <table border="1">
         <tr>
+            <th>外送員 ID</th>
             <th>外送員名稱</th>
             <th>接單數</th>
         </tr>
         {% for deliver in delivers %}
         <tr>
+            <td>{{ deliver.deliver_id }}</td>
             <td>{{ deliver.deliver_name }}</td>
             <td>{{ deliver.orders }}</td>
         </tr>

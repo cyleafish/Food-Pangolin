@@ -30,38 +30,46 @@ def deliver_home():
     order_by = request.args.get('order_by', 'time')
     orders = fetch_pending_orders(order_by)
     current_orders = get_current_orders(deliver_id)
-    deliver_history = get_deliver_history(deliver_id)
+
     return render_template(
         'deliver_home.html',
         orders=orders,
         current_orders=current_orders,
-        deliver_history=deliver_history
     )
 
+"""
+@deliver_bp.route('/register_deliver', methods=['GET', 'POST'])
+def register_deliver():
+    if request.method == 'POST':
+        # 從表單取得資料
+        username = request.form['username']
+        password = request.form['password']
+        phone = request.form['phone']
+        car_num = request.form['car_num']
 
-# @deliver_bp.route('/register_deliver', methods=['GET', 'POST'])
-# def register_deliver():
-#     if request.method == 'POST':
-#         # 從表單取得資料
-#         username = request.form['username']
-#         password = request.form['password']
-#         phone = request.form['phone']
-#         car_num = request.form['car_num']
-
-#         # 檢查帳號是否已存在
-#         existing_user = check_existing_user(username)
+        # 檢查帳號是否已存在
+        existing_user = check_existing_user(username)
         
-#         if existing_user:
-#             flash('已經有此帳號了')  
-#             return redirect(url_for('register_deliver'))
-#         else:  # 帳號不存在，執行註冊
-#             register_deliver_account(username, password, phone, car_num)
-#             flash('註冊成功，請登入')
-#             return redirect(url_for('login'))
+        if existing_user:
+            flash('已經有此帳號了')  
+            return redirect(url_for('register_deliver'))
+        else:  # 帳號不存在，執行註冊
+            register_deliver_account(username, password, phone, car_num)
+            flash('註冊成功，請登入')
+            return redirect(url_for('login'))
 
-#     # 如果是 GET 請求，直接顯示註冊表單
-#     return render_template('register_deliver.html')
+    # 如果是 GET 請求，直接顯示註冊表單
+    return render_template('register_deliver.html')
+"""
 
+@deliver_bp.route('/history_order')
+def history_order():
+    user_id = session.get('user_id')
+    deliver_id = fetch_deliver_id(user_id)
+    
+    deliver_history = get_deliver_history(deliver_id)
+    return render_template('history_order.html',deliver_history=deliver_history
+    )
 
 @deliver_bp.route('/deliver/info', methods=['GET'])
 def deliver_info():
