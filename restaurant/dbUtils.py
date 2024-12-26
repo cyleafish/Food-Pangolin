@@ -34,6 +34,23 @@ def register_user(data):
 	conn.commit()
 	return
 
+#取得user_id
+def getuser_id(username):
+	sql="SELECT user_id FROM user_account where username=%s;"
+	param=(username,)
+	cursor.execute(sql,param)
+	return cursor.fetchone()
+
+
+#創建restaurant
+def create_rest(user_id):
+	sql="insert into restaurant (user_id) VALUES (%s);"
+	param=(user_id,)
+	cursor.execute(sql,param)
+	conn.commit()
+	return
+
+
 #查看菜單
 def get_all_menu(username):
 	sql='SELECT menu_id,filename, name, price, description FROM menu INNER JOIN restaurant ON menu.rest_id = restaurant.rest_id INNER JOIN user_account ON restaurant.user_id = user_account.user_id  where user_account.username=%s;'
@@ -70,9 +87,6 @@ def getrest_id(rest_id):
 def addmenu(rest_id, name, price, description, filename):
     
     restid = rest_id['rest_id']  # 使用鍵 'rest_id' 取出字典中的值
-    print(price,668)
-    print(rest_id,666)
-    print(restid,5412)
     sql = "INSERT INTO menu (rest_id, name, price, description, filename) VALUES (%s, %s, %s, %s, %s);"  # 新增 img 欄位
     param = (restid, name, price, description, filename)
     cursor.execute(sql, param)
@@ -145,6 +159,23 @@ def getcomplite(rest_id):
     return cursor.fetchall()
 
 
+#篩選訂單細項
+def getorderdetails(order_id):
+    sql='SELECT order.order_id, menu.name, order_item.quantity, order_item.price,order_item.note, order.status FROM `order` INNER JOIN order_item ON order.order_id = order_item.order_id INNER JOIN menu ON menu.menu_id = order_item.menu_id WHERE order.order_id = %s;'
+    param=(order_id,)
+    print(param,488484)
+    cursor.execute(sql,param)
+    return cursor.fetchall()
+
+#更新訂單狀態
+def update_status(order_id, status):
+    sql = "UPDATE `order` SET status=%s WHERE order_id=%s"
+    params = (status, order_id)
+    cursor.execute(sql, params)
+    conn.commit()	
+    
+    return
+
 #刪除
 def delete_menu(menu_id):
     sql = "DELETE FROM menu WHERE menu_id = %s"
@@ -152,61 +183,6 @@ def delete_menu(menu_id):
     cursor.execute(sql, param)
     conn.commit()
     return
-
-#刪除
-def delete(gid):
-    sql = "DELETE FROM ginfo WHERE gid = %s"
-    param = (gid,)
-    cursor.execute(sql, param)
-    conn.commit()
-    return
-	
-#競標
-def getall():
-	sql="SELECT ginfo.gid, ginfo.gname, ginfo.rp, ginfo.hp, ginfo.gc FROM db INNER JOIN acinfo ON db.aid = acinfo.aid INNER JOIN ginfo ON db.gid = ginfo.gid;"
-	cursor.execute(sql,)
-	return cursor.fetchall()
-
-def gethis(gid):
-	sql="SELECT ginfo.gname, ginfo.rp, bh.hp, ginfo.gc, bh.time, bh.aaid FROM bh INNER JOIN db ON db.did = bh.did INNER JOIN ginfo ON db.gid = ginfo.gid where ginfo.gid=%s;"
-	parom=(gid,)
-	cursor.execute(sql,parom)
-	return cursor.fetchall()
-
-def getdid(gid):
-    sql = "SELECT did FROM db WHERE gid = %s;"
-    parom=(gid,)
-    cursor.execute(sql,parom)
-    return cursor.fetchone()
-
-#取得目前最高價
-def getnowhp(gid):
-    sql = "SELECT hp FROM ginfo WHERE gid = %s"
-    param = (gid,)
-    cursor.execute(sql, param)
-    return cursor.fetchone()
-
-#取得底價
-def getnowrp(gid):
-    sql = "SELECT rp FROM ginfo WHERE gid = %s"
-    param = (gid,)
-    cursor.execute(sql, param)
-    return cursor.fetchone()
-
-def addhis(data):
-	sql="insert into bh (did,gid,aaid,hp) VALUES (%s, %s, %s, %s);"
-	param=tuple(data)
-	cursor.execute(sql,param)
-	conn.commit()
-	return
-
-def updategifo(hp, gid):
-    sql = "UPDATE ginfo SET hp=%s WHERE gid=%s"
-    params = (hp, gid)
-    cursor.execute(sql, params)
-    conn.commit()		
-    return
-
 
 
 

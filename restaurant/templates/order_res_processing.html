@@ -95,10 +95,13 @@
                 <td>{{ item.total_price }}</td>
                 <td>{{ item.deliver_id }}</td>
                 <td>{{ item.status }}</td>
-            
                 <td>
-                    <a href="/edit_order?order_id={{ item.order_id }}" class="bid-link">修改訂單</a>
+                    <form action="/order_res_details" method="post">  
+                        <input type="hidden" name="order_id" value="{{ item.order_id }}">
+                        <button type="submit" class="action-link" style="background-color: #FF0000;">修改訂單</button>
+                    </form>
                 </td>
+
             </tr>
             {% endfor %}
         </tbody>

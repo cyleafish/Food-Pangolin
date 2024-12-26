@@ -3,6 +3,8 @@ from flask import Flask, render_template, request, session, redirect
 from functools import wraps
 from dbUtils import getList
 from dbUtils import addmenu
+from dbUtils import getuser_id
+from dbUtils import create_rest
 from dbUtils import register_user
 from dbUtils import getmenuedit
 from dbUtils import get_all_menu
@@ -14,7 +16,8 @@ from dbUtils import getrestid
 from dbUtils import getorderlist
 from dbUtils import getcomplite
 from dbUtils import getprocessing
-
+from dbUtils import getorderdetails
+from dbUtils import update_status
 
 # creates a Flask application, specify a static folder on /
 app = Flask(__name__, static_folder='static',static_url_path='/')
@@ -89,7 +92,8 @@ def register():
     }
     
     register_user(data)
-    
+    user_id = getuser_id(data['username'])
+    create_rest(user_id['user_id'])
     return redirect('/login_res')
 
 
@@ -224,6 +228,7 @@ def printordercompleteqq():
     print(items)
     return render_template('order_res_complite.html', data=items)
 
+
 #看所有處理中訂單
 @app.route("/order_res_processing", methods=['POST', 'GET'])  # 只允許 POST 方法
 @login_required
@@ -234,44 +239,20 @@ def printordercomplete():
     return render_template('order_res_processing.html', data=items)
 
 
-# #競標、全部資料
-# @app.route('/all', methods=['GET','POST'])
-# @login_required
-# def gghji():
-# 	abb=getall()
-# 	return render_template('all.html',data=abb)
+#取得訂單資料
+@app.route("/order_res_details", methods=['GET', 'POST']) 
+@login_required
+def printorderdetails():
+    order_id =request.form.get('order_id')
+    items = getorderdetails(order_id)  # 使用 db.py 中的 getorderdetails 函式
+    return render_template('order_res_details.html', data=items)
 
-# @app.route('/bid', methods=['GET','POST'])
-# @login_required
-# def grhji():
-#     gid = request.args.get("gid")  # 從 URL 參數獲取 gid
-#     print(gid)
-#     abb = gethis(gid)        # 使用 gid 查詢競標紀錄
-#     return render_template('his.html', data=abb, gid = gid)
 
-# @app.route('/addhis', methods=['GET', 'POST'])
-# @login_required
-# def pghji():
-#     ac = session['loginID']
-#     aaid = getaid(ac)
-#     gid = request.form['gid']  # 從 URL 參數獲取 gid
-#     did_dict = getdid(gid)
-#     did = did_dict["did"]  # 提取 did 值
-
-#     user_bid = int(request.form['hp'])  # 使用者的出價
-#     hp_dict = getnowhp(gid)  # 獲取當前最高價
-#     rp_dict = getnowrp(gid)  # 獲取底價
-
-#     # 提取數值
-#     current_hp = hp_dict["hp"]
-#     rp = rp_dict["rp"]
-
-#     # 判斷使用者出價是否高於當前最高價和底價
-#     if user_bid > current_hp and user_bid > rp:
-#         data = (did, gid, aaid, user_bid)
-#         addhis(data)
-#         updategifo(user_bid, gid)
-#         return redirect('/all')
-#     else:
-#         return redirect('/all')
-
+@app.route("/order_res_update_details", methods=['POST']) 
+@login_required
+def updateorderdetails():
+    status = request.form.get('status')
+    order_id = request.form.get('order_id')  # 從查詢參數獲取 order_id
+    print(order_id, status)
+    update_status(order_id, status) 
+    return redirect('/order_res_host')
