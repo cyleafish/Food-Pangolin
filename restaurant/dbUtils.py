@@ -1,5 +1,6 @@
 #!/usr/local/bin/python
 # Connect to MariaDB Platform
+from datetime import datetime
 import mysql.connector #mariadb
 
 try:
@@ -44,11 +45,12 @@ def getuser_id(username):
 
 #創建restaurant
 def create_rest(user_id):
-	sql="insert into restaurant (user_id) VALUES (%s);"
-	param=(user_id,)
-	cursor.execute(sql,param)
-	conn.commit()
-	return
+    date=datetime.now()
+    sql="insert into restaurant (user_id,time) VALUES (%s,%s);"
+    param=(user_id,date,)
+    cursor.execute(sql,param)
+    conn.commit()
+    return
 
 
 #查看菜單
