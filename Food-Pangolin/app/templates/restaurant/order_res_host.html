@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>訂單</title>
+    <style>
+body {
+  font-family: sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f4f4f4;
+  flex-direction: column; /* 垂直排列按鈕 */
+  gap: 10px; /* 按鈕之間的間距 */
+}
+
+.container {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center; /*  按鈕水平置中  */
+}
+
+.button {
+  display: inline-block; 
+  padding: 12px 20px;
+  margin: 8px 0;
+  background-color: #4CAF50; /*  綠色按鈕  */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  text-decoration: none; /*  移除連結底線  */
+  cursor: pointer;
+  transition: background-color 0.3s ease; /*  滑鼠懸停效果  */
+}
+
+.button:hover {
+  background-color: #45a049; /*  深綠色  */
+}
+    </style>
+</head>
+<body>
+    <h1>訂單系統</h1>
+     <div class="container">
+         <a href="/order_res_list" class="button">查看未處理</a>
+         <a href="/order_res_processing" class="button">查看處理中</a>
+         <a href="/order_res_complete" class="button">查看已完成</a>
+         <a href="/host_res" class="button">返回</a>
+    </div>
+    
+    </body>
+    </html>

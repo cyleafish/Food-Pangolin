@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商家應收金額</title>
+</head>
+<body>
+    <h1>商家應收金額</h1>
+    <!-- 排序功能 -->
+    <form method="get" action="{{ url_for('platform.merchant_earnings') }}">
+        <label for="order_by">排序條件：</label>
+        <select name="order_by" id="order_by" onchange="this.form.submit()">
+            <option value="rest_id" {% if request.args.get('order_by') == 'rest_id' %}selected{% endif %}>餐廳 ID</option>
+            <option value="total_price" {% if request.args.get('order_by') == 'total_price' %}selected{% endif %}>總金額</option>
+        </select>
+    </form>
+
+    <table border="1">
+        <tr>
+            <th>商家 ID</th>
+            <th>商家名稱</th>
+            <th>總收入</th>
+        </tr>
+        {% for merchant in merchants %}
+        <tr>
+            <td>{{ merchant.rest_id }}</td>
+            <td>{{ merchant.restname }}</td>
+            <td>{{ merchant.earnings }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="{{ url_for('platform.index') }}">返回首頁</a>
+</body>
+</html>
