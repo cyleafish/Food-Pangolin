@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, session, redirect, flash
 from functools import wraps
-from dbUtils import compare, register_user, register_account, getUser, getCustomer, get_restaurants, get_menu_items, get_order_details, add_order, save_order_to_history
+from dbUtils import compare, register_user, register_account, getUser, getCustomer, get_restaurants, get_menu_items, get_order_details, add_order, get_order_history, get_details
 
 app = Flask(__name__, static_folder='static', static_url_path='/')
 app.config['SECRET_KEY'] = '123TyU%^&'
@@ -80,6 +80,7 @@ def register():
 def homepage():
     username = session.get('username')
     users = getCustomer(username)
+    session['customer_id']=users['customer_id']
     session['name'] = users['name']
     session['email'] = users['email']
     session['phone'] = users['phone']
@@ -127,9 +128,11 @@ def confirm_order():
                     'quantity': quantity,
                     'note': note,
                 }
+        cart = {key: val for key, val in cart.items() if val['quantity'] > 0}
         session['cart'] = cart  # 保存購物車到 session
 
     cart = session.get('cart', {})
+    print(cart)
     if not cart:
         flash('購物車為空，請重新選擇餐點。')
         return redirect(f'/menu?id={restaurant_id}')
@@ -141,14 +144,37 @@ def confirm_order():
     return render_template('confirm.html', cart=order_details, total_price=total_price, restaurant=restaurant_id)
 
 # 訂單完成頁面
-@app.route('/order_finish', methods=['GET'])
+@app.route('/order_finish', methods=['GET','POST'])
 def order_finish():
-    cart = session.pop('cart', None)  # 清空購物車
-    if not cart:
-        flash('訂單無效或已完成。')
-        return redirect('/menu')
-    return render_template('orderfinish.html')
-
+    cart=session.get('cart' ,{})
+    customer_id=session.get('customer_id')
+    order_details = get_order_details(cart)
+    print(order_details)
+    total_price = sum(item['item_total'] for item in order_details)
+    user = {
+        'rest_id': session['restaurant_id'],
+        'total_price': total_price,
+        'address': session['address']
+    }
+    order=add_order(customer_id,cart,order_details,user)
+    return render_template('orderfinish.html',order=order,cart=order_details,total_price=total_price,user=user)
+@app.route('/orderhistory', methods=['GET'])
+def finish():
+    customer_id = session.get('customer_id')
+    if not customer_id:
+        flash('請先登入')
+        return redirect('/login')
+    orders = get_order_history(customer_id)
+    return render_template('history.html', orders=orders)
+@app.route('/orderdetails/<int:order_id>', methods=['GET'])
+@login_required
+def order_details(order_id):
+    # 查詢訂單商品明細
+    items = get_details(order_id)
+    return render_template('details.html', items=items)
+@app.route('/evaluate/<int:order_id>', methods=['GET','POST'])
+def evaluate():
+    return render_template('evaluate.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

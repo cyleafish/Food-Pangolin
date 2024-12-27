@@ -136,7 +136,7 @@ a:hover {
 <body>
     <div class="container">
         <h2>確定要送出訂單嗎</h2>
-        
+        <form action="/order_finish" method="post">
         <div id="orderDetails">
             {% for item in cart %}
             <div class="order-item">
@@ -148,7 +148,6 @@ a:hover {
             {% endfor %}
             <h3>總金額: ${{ total_price }}</h3>
         </div>
-        <form action="/order_finish" method="post">
             <button type="submit">送出訂單</button>
         </form>
         

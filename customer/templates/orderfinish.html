@@ -127,11 +127,11 @@
     </header>
 
     <main>
-        <h2>您的訂單紀錄</h2>
+        <h2>您的訂單資訊</h2>
          
         <!-- 訂單詳情 -->
         <div class="order-details">
-            {% for item_id, item in cart.items() %}
+            {% for item in cart %}
             <div class="order-item">
                 <h3>商品名稱：{{ item.name }}</h3>
                 <p>數量：{{ item.quantity }}</p>

@@ -79,16 +79,18 @@ def get_order_details(cart):
         note = item_data.get('note', '')
 
         # 從數據庫查詢菜品名稱和價格
-        sql = "SELECT name, price FROM menu WHERE menu_id = %s"
+        sql = "SELECT menu_id, name, price FROM menu WHERE menu_id = %s"
         cursor.execute(sql, (item_id,))
         item = cursor.fetchone()  # 假設這是返回字典 {'name': ..., 'price': ...}
 
         if item:
+            id=item['menu_id']
             name = item['name']
             price = float(item['price'])
             item_total = price * quantity  # 計算小計
 
             order_details.append({
+                'menu_id':id,
                 'name': name,
                 'price': price,
                 'quantity': quantity,
@@ -98,24 +100,54 @@ def get_order_details(cart):
 
     return order_details
 
-def add_order(customer_id, cart):
-    sql = "INSERT INTO `order` (customer_id, status) VALUES (%s, %s)"
-    cursor.execute(sql, (customer_id, 'pending'))
+def add_order(customer_id, cart, order_details, data):
+    # 插入到訂單表
+    sql = "INSERT INTO `order` (customer_id, status, rest_id, total_price, addr) VALUES (%s, %s, %s, %s, %s)"
+    cursor.execute(sql, (customer_id, 'pending', data['rest_id'], data['total_price'], data['address']))
     conn.commit()
     order_id = cursor.lastrowid
 
     # 新增訂單詳細表
-    for item_id, quantity in cart.items():
+    for item_id, item_details in cart.items():
+        # 從 order_details 找到對應的 price 和 note
+        detail = next((item for item in order_details if str(item['menu_id']) == str(item_id)), None)
+        if detail:
+            price = detail['price']
+            note = detail['note']
+        else:
+            price = 0.0
+            note = ''
+
+        quantity = item_details['quantity'] if isinstance(item_details, dict) else item_details
+
         sql = """
-            INSERT INTO order_items (order_id, menu_id, quantity)
-            VALUES (%s, %s, %s)
+            INSERT INTO order_item (order_id, menu_id, quantity, price, note)
+            VALUES (%s, %s, %s, %s, %s)
         """
-        cursor.execute(sql, (order_id, item_id, quantity))
+        cursor.execute(sql, (order_id, item_id, quantity, price, note))
+
     conn.commit()
     return order_id
-def save_order_to_history(order_id):
-    sql = "UPDATE order SET status = %s WHERE order_id = %s"
-    cursor.execute(sql, ('completed', order_id))
-    conn.commit()
+
+def get_order_history(customer_id):
+    sql = """
+    SELECT o.order_id, o.total_price, o.status, o.date, r.restname AS rest_name
+    FROM `order` o
+    JOIN restaurant r ON o.rest_id = r.rest_id
+    WHERE o.customer_id = %s
+    ORDER BY o.date 
+    """
+    cursor.execute(sql, (customer_id,))
+    return cursor.fetchall()
+def get_details(order_id):
+    sql = """
+    SELECT oi.item_id, m.name AS item_name, oi.quantity, oi.price, 
+           (oi.quantity * oi.price) AS total_price, oi.note
+    FROM order_item oi
+    JOIN menu m ON oi.menu_id = m.menu_id
+    WHERE oi.order_id = %s
+    """
+    cursor.execute(sql, (order_id,))
+    return cursor.fetchall()
 
      
