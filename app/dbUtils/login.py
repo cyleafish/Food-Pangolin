@@ -23,6 +23,19 @@ def verify_user(username, password):
     connection.close()
     return user
 
+def verify_restaurant(username):
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+    query = """SELECT restaurant.rest_id AS rest_id FROM `restaurant` 
+    INNER JOIN user_account ON restaurant.user_id = user_account.user_id 
+    WHERE user_account.username = %s;"""
+    cursor.execute(query, (username,))
+    rest_id = cursor.fetchone()
+    
+    cursor.close()
+    connection.close()
+    return rest_id
+
 def check_existing_user(username):
     connection = get_db_connection()
     cursor = connection.cursor()

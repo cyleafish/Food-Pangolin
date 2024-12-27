@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session,flash
 from app.dbUtils.login import (verify_user,check_existing_user,
                                register_merchant_account,register_deliver_account,
-                               register_customer_account)  # 假設 verify_user 是通用的驗證函式
+                               register_customer_account,verify_restaurant)  # 假設 verify_user 是通用的驗證函式
 
 auth_bp = Blueprint('auth', __name__, template_folder='../templates/auth')
 
@@ -23,6 +23,11 @@ def login():
                 return redirect(url_for('deliver.deliver_home'))
             elif user['role'] == 'platform':
                 return redirect(url_for('platform.index'))
+            elif user['role'] == 'restaurant':
+                rest_id = verify_restaurant(username)
+                session['rest_id'] = rest_id['rest_id']
+                print(rest_id['rest_id'])
+                return redirect(url_for('restaurant.host_res'))
             else:
                 return "未知角色，請聯繫管理員。", 400
         else:

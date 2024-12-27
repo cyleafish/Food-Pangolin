@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>訂單細項</title>
+</head>
+<body>
+
+<h1>訂單細項</h1>
+{{order_id}}
+<table>
+    <thead>
+        <tr>
+            <th>品項名稱</th>
+            <th>數量</th>
+            <th>價格</th>
+            <th>備註</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in data %}
+        <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.price }}</td>
+            <td>{{ item.note }}</td>
+        </tr>
+        {% endfor %}
+</tbody>
+</table>
+
+<div>
+    <button onclick="window.location.href='/order_res_host'">返回</button>
+
+    <form action="/order_res_update_details" method="POST">
+        <label for="status">修改狀態:</label>
+        <select id="status" name="status"> 
+            <option value="order">order</option>
+            <option value="pending">pending</option>
+            <option value="accepted">accepted</option>
+            <option value="prepared">prepared</option>
+            <option value="on_delivery">on_delivery</option>
+            <option value="arrived">arrived</option>
+            <option value="completed">completed</option>
+            <option value="cancelled">cancelled</option>
+        </select>
+        <input type="hidden" name="order_id" value="{{ data[0].order_id }}"> 
+    
+        <button type="submit">保存</button> 
+    </form>
+</div>
+
+
+
+</body>
+</html>

@@ -1,6 +1,6 @@
 from flask import Flask,Blueprint, render_template, request, redirect, url_for, session,flash
 from app.dbUtils.platform_dbUtils import fetch_merchant_earnings, fetch_deliver_orders, fetch_customer_payments
-from app.dbUtils.login import verify_user
+
 
 # 創建 Blueprint
 platform_bp = Blueprint('platform', __name__, template_folder='../templates/platform')
