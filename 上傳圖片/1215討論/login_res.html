@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商家登入</title>
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 50px;
+            box-shadow: 0 2px 10px ;
+            width: 300px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            
+        }
+
+        .btn:hover {
+            background-color: #218838;
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .forgot-password a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <h2>帳號登入</h2>
+        <form action="/user" method="post">
+            <div class="input-group">
+                <label for="id">商家名稱</label>
+                <input type="text" id="id" name="id" required>
+            </div>
+            <div class="input-group">
+                <label for="pwd">密碼</label>
+                <input type="password" id="pwd" name="pwd" required>
+            </div>
+            <a href='host_res.html'>登入(無後端)</a>
+            <button type="submit" class="btn">登入</button >
+        </form>
+
+        <div class="forgot-password">
+            <a href='log_res.html'>帳號註冊</a>
+        </div>
+        <div class="forgot-password">
+            <a href='host.html'>不是商家</a>
+        </div>
+
+    </div>
+
+</body>
+</html>
