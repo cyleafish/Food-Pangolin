@@ -141,7 +141,7 @@ def get_order_history(customer_id):
     return cursor.fetchall()
 def get_details(order_id):
     sql = """
-    SELECT oi.item_id, m.name AS item_name, oi.quantity, oi.price, 
+    SELECT oi.order_id, oi.item_id, m.name AS item_name, oi.quantity, oi.price, 
            (oi.quantity * oi.price) AS total_price, oi.note
     FROM order_item oi
     JOIN menu m ON oi.menu_id = m.menu_id
@@ -149,5 +149,13 @@ def get_details(order_id):
     """
     cursor.execute(sql, (order_id,))
     return cursor.fetchall()
+def insert_comment(rest_id, customer_id, star, comment, data):
+    sql = """
+        INSERT INTO comment (rest_id, customer_id, star, comment, data)
+        VALUES (%s, %s, %s, %s, %s)
+    """
+    cursor.execute(sql,(rest_id, customer_id, star, comment, data))
+    conn.commit()  
+    return 
 
      

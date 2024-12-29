@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, session, redirect, flash
 from functools import wraps
-from dbUtils import compare, register_user, register_account, getUser, getCustomer, get_restaurants, get_menu_items, get_order_details, add_order, get_order_history, get_details
+from dbUtils import compare, register_user, register_account, getUser, getCustomer, get_restaurants, get_menu_items, get_order_details, add_order, get_order_history, get_details, insert_comment
 
 app = Flask(__name__, static_folder='static', static_url_path='/')
 app.config['SECRET_KEY'] = '123TyU%^&'
@@ -171,10 +171,23 @@ def finish():
 def order_details(order_id):
     # 查詢訂單商品明細
     items = get_details(order_id)
-    return render_template('details.html', items=items)
-@app.route('/evaluate/<int:order_id>', methods=['GET','POST'])
-def evaluate():
-    return render_template('evaluate.html')
+    return render_template('details.html', items=items, order_id=order_id)
+@app.route('/evaluate/<int:order_id>', methods=['GET', 'POST'])
+@login_required
+def evaluate(order_id):
+    restaurant_id = session.get('restaurant_id')
+    customer_id=session.get('customer_id')
 
+    if request.method == 'POST':
+        rest_id = request.form['rest_id']
+        customer_id = request.form['customer_id']
+        star = request.form['star']
+        comment = request.form['comment']
+        data = request.form['data']
+        insert_comment(rest_id, customer_id, star, comment, data)
+
+        flash('評論提交成功！')
+        return redirect(f'/orderdetails/{order_id}')
+    return render_template('evaluate.html', order_id=order_id, rest_id=restaurant_id, customer_id=customer_id)
 if __name__ == '__main__':
     app.run(debug=True)
