@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>訂單完成</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        /* Basic Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: 32px;
+            color: #2c3e50;
+        }
+
+        nav a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #3498db;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        .order-details, .order-summary, .review-section {
+            margin-bottom: 20px;
+        }
+
+        .order-item {
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-item h3 {
+            font-size: 18px;
+            color: #34495e;
+        }
+
+        .order-item p {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+        .total-price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #e74c3c;
+            text-align: right;
+        }
+
+        .review-section {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .review-section h3 {
+            font-size: 18px;
+            color: #34495e;
+        }
+
+        .review-section p {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        a {
+    display: inline-block;
+    margin: 10px 5px;
+    padding: 10px 20px;
+    color: white;
+    background-color: #f21818;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+        }
+        a:hover {
+    background-color: #f21818;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        }        
+    </style>
+</head>
+<body>
+    <header>
+        <h1>訂單完成</h1>
+        <nav>
+            <a href="/homepage">回首頁</a>
+        </nav>
+    </header>
+
+    <main>
+        <h2>您的訂單資訊</h2>
+         
+        <!-- 訂單詳情 -->
+        <div class="order-details">
+            {% for item in cart %}
+            <div class="order-item">
+                <h3>商品名稱：{{ item.name }}</h3>
+                <p>數量：{{ item.quantity }}</p>
+                <p>價格：${{ item.price }}</p>
+            </div>
+            {% endfor %}
+
+            <div class="order-summary">
+                <h3 class="total-price">總金額：$<span id="total-amount">{{ total_price }}</span></h3>
+            </div>
+        </div>
+
+        
+
+        <footer>
+            <p>&copy; 巴豆妖免歡樂平台</p>
+        </footer>
+    </main>
+</body>
+</html>

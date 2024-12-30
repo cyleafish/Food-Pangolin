@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>菜單</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            color: #333;
+            text-align: center;
+        }
+        h1 {
+            color: #4a90e2;
+        }
+        table {
+            width: 100%;
+            max-width: 900px;
+            margin: 20px auto;
+            border-collapse: collapse;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            color: #555;
+            font-weight: bold;
+            text-align: center;
+        }
+        td {
+            background-color: #fff;
+        }
+        tr:nth-child(even) td {
+            background-color: #f9f9f9;
+        }
+        .action-link {
+            color: #f7f8fa;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        .action-link:hover {
+            color: #092038;
+        }
+a {
+    display: inline-block;
+    margin: 10px 5px;
+    padding: 10px 20px;
+    color: white;
+    background-color: #f21818;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+        }
+a:hover {
+    background-color: #f21818;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+button {
+    display: inline-block;
+    margin: 10px 5px;
+    padding: 10px 20px;
+    color: white;
+    background-color: #f21818;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+button:hover {
+    background-color: #f21818;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+ul li {
+            color: red; /* 設定錯誤訊息的文字顏色 */
+            text-align: center; /* 讓錯誤訊息文字置中 */
+            margin-bottom: 10px; /* 錯誤訊息之間增加下邊距 */
+        }
+nav{
+    display: flex;
+     justify-content: center;
+      gap: 10px; 
+      margin-top: 20px;
+}
+    </style>
+</head>
+<body>
+    <h1>菜品列表</h1>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% endwith %}
+    <form action="/confirm" method="post">
+        <input type="hidden" name="restaurant" value="{{ restaurant }}">
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>菜圖</th>
+                <th>菜名</th>
+                <th>售價</th>
+                <th>介紹</th>
+                <th>數量</th>
+                <th>備註</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in menu_items %}
+            <tr>
+                <td><img src="{{ url_for('static', filename=item.filename) }}" alt="{{ item.name }}" width="100"></td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.price }}</td>
+                <td>{{ item.description }}</td>
+                <td>
+                    <input type="number" name="quantity_{{ item.menu_id }}" min="0" max="10" value="0">
+                </td>
+                <td>
+                    <input type="text" name="note_{{ item.menu_id }}" placeholder="備註">
+                </td>
+            </tr> 
+            {% endfor %}
+        </tbody>
+    </table>
+    <nav>
+        <button type="submit">下單</button>
+        <a href="/customer">返回</a>
+    </nav>
+</form>
+</body>
+</html>
