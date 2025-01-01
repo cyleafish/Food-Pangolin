@@ -17,12 +17,14 @@ def login():
             session['user_id'] = user['user_id']
             session['role'] = user['role']
             session['username'] = user['username']
-
+            print(session['role'])
             # 根據角色導航到不同頁面
             if user['role'] == 'deliver':
                 return redirect(url_for('deliver.deliver_home'))
             elif user['role'] == 'platform':
                 return redirect(url_for('platform.index'))
+            elif user['role'] == 'customer':
+                return redirect(url_for('customer.homepage'))
             elif user['role'] == 'restaurant':
                 rest_id = verify_restaurant(username)
                 session['rest_id'] = rest_id['rest_id']

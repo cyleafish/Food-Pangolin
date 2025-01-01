@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>評論訂單</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 50%;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, textarea, select {
+            margin-bottom: 15px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>評價</h1>
+        <form method="POST">
+            <label for="rest_id">餐廳編號：{{ rest_name }}</label>
+            <input type="hidden" name="rest_id" value="{{ rest_id }}">
+
+            <label for="customer_id">顧客編號：{{ customer_id }}</label>
+            <input type="hidden" name="customer_id" value="{{ customer_id }}">
+
+            <label for="star">評分：</label>
+            <select id="star" name="star" required>
+                <option value="5">5 &#9733</option>
+                <option value="4">4 &#9733</option>
+                <option value="3">3 &#9733</option>
+                <option value="2">2 &#9733</option>
+                <option value="1">1 &#9733</option>
+            </select>
+
+            <label for="comment">評論內容：</label>
+            <textarea id="comment" name="comment" rows="4" required></textarea>
+
+            <label for="data">評論日期：</label>
+            <input type="date" id="data" name="data" required>
+
+            <button type="submit">提交評論</button>
+            
+        </form>
+        <a href="{{url_for('customer.order_details',order_id=order_id) }}">返回</a>
+    </div>
+</body>
+</html>
+

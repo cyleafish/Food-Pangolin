@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>客人之家</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<style>
+    /* Reset some default styles */
+    body, h1, h2, h3, p, a {
+        margin: 0;
+        padding: 0;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    /* Global styles */
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+        color: #333;
+    }
+
+    header {
+        background-color: #4CAF50;
+        color: white;
+        padding: 1rem 2rem;
+        text-align: center;
+    }
+
+    header h1 {
+        margin-bottom: 0.5rem;
+    }
+
+    nav {
+        margin-top: 0.5rem;
+    }
+
+    nav a {
+        color: white;
+        font-weight: bold;
+        margin: 0 0.5rem;
+    }
+
+    nav a:hover {
+        text-decoration: underline;
+    }
+
+    main {
+        padding: 2rem;
+        max-width: 900px;
+        margin: auto;
+    }
+
+    h2 {
+        text-align: center;
+        color: #4CAF50;
+        margin-bottom: 1rem;
+    }
+
+    .restaurant-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        justify-content: center;
+    }
+
+    .restaurant {
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 1rem;
+        width: 280px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .restaurant h3 {
+        margin-bottom: 0.5rem;
+        color: #333;
+    }
+
+    .restaurant p {
+        margin-bottom: 1rem;
+        color: #666;
+    }
+
+    .restaurant .button {
+        display: inline-block;
+        background-color: #6df3fc;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .restaurant .button:hover {
+        background-color: #4591a0;
+    }
+
+    footer {
+        text-align: center;
+        padding: 1rem;
+        background-color: #333;
+        color: white;
+        position: relative;
+        bottom: 0;
+        width: 100%;
+    }
+</style>
+<body>
+    <header>
+        <h1>Welcome!</h1>
+        <nav>
+            <a href="{{ url_for('customer.homepage') }}">回首頁</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Restaurants</h2>
+        <div class="restaurant-list">
+            {% for restaurant in restaurants %}
+            <div class="restaurant">
+                <h3>{{ restaurant.restname }}</h3> <!-- 顯示餐廳名稱 -->
+                <p>地址: {{ restaurant.addr }}</p> <!-- 顯示餐廳地址 -->
+                <p>電話: {{ restaurant.phone }}</p> <!-- 顯示餐廳電話 -->
+                <p>營業時間: {{ restaurant.time }}</p> <!-- 顯示餐廳營業時間 -->
+                <a href="{{url_for('customer.menu',id=restaurant.rest_id) }}" class="button">menu</a>
+            </div>
+            
+            {% endfor %}
+        </div>
+    </main>
+
+</body>
+</html>

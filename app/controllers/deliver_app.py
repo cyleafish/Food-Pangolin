@@ -1,7 +1,7 @@
 from flask import Flask,Blueprint, render_template, request, redirect, url_for, session,flash
-from app.dbUtils.deliver_dbUtils import ( fetch_pending_orders, fetch_deliver_info,
+from app.dbUtils.deliver_dbUtils import ( fetch_accepted_orders, fetch_deliver_info,
 get_order_info,get_order_details,get_delivery_address,update_order_status,
-fetch_deliver_id,get_current_orders,get_deliver_history,accepted_order,add_customer_rating,
+fetch_deliver_id,get_current_orders,get_deliver_history,on_delivery_order,add_customer_rating,
 )
 
 
@@ -28,7 +28,7 @@ def deliver_home():
     user_id = session.get('user_id')
     deliver_id = fetch_deliver_id(user_id)
     order_by = request.args.get('order_by', 'time')
-    orders = fetch_pending_orders(order_by)
+    orders = fetch_accepted_orders(order_by)
     current_orders = get_current_orders(deliver_id)
 
     return render_template(
@@ -106,12 +106,12 @@ def accept_order():
         return "錯誤：無法接單，請重新嘗試。", 400
 
     try:
-        success = accepted_order(order_id, deliver_id)
+        success = on_delivery_order(order_id, deliver_id)
 
         if not success:
             return "接單失敗：訂單可能已被接走。", 400
-
-        return redirect(url_for('deliver_home'))
+        print(success)
+        return redirect(url_for('deliver.deliver_home'))
 
     except Exception as e:
         return f"發生錯誤：{e}", 500
@@ -123,7 +123,7 @@ def update_order_status_route(order_id, new_status):
     
     success = update_order_status(order_id, new_status)
     if success:
-        return redirect(url_for('deliver_home'))
+        return redirect(url_for('deliver.deliver_home'))
     else:
         return "狀態更新失敗", 500
 
@@ -149,6 +149,6 @@ def rate_customer_and_complete(order_id):
     if not success_status:
         return "訂單狀態更新失敗", 500
 
-    return redirect(url_for('deliver_home'))
+    return redirect(url_for('deliver.deliver_home'))
 
 

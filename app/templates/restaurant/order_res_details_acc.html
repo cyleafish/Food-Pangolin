@@ -36,8 +36,8 @@
     <form action="{{ url_for('restaurant.update_order_details') }}" method="POST">
         <label for="status">修改狀態:</label>
         <select id="status" name="status"> 
-            <option value="pending">接單</option>
-            <option value="cancelled">拒絕接單</option>
+            <option value="prepared">確定出餐</option>
+            <option value="cancelled">拒單</option>
         </select>
         <input type="hidden" name="order_id" value="{{ data[0].order_id }}"> 
     

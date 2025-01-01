@@ -1,16 +1,17 @@
-function confirmOrder(orderId) {
+function confirmOrder(url) {
     if (confirm("確定接單嗎？")) {
-        // 跳轉到接單的路由
-        window.location.href = `/accept_order?order_id=${orderId}`;
+        // 直接使用傳入的 URL
+        window.location.href = url;
     }
 }
 
-function openRatingModal(orderId) {
-    // 設定表單的訂單ID
-    document.getElementById('modalOrderId').value = orderId;
-    document.getElementById('ratingForm').action = `/rate_customer_and_complete/${orderId}`;
+
+function openRatingModal(url) { 
+    // 將表單的 action 設置為生成的 URL
+    document.getElementById('ratingForm').action = url;
     document.getElementById('ratingModal').style.display = 'block';
 }
+
 
 
 function closeRatingModal() {

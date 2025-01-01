@@ -72,16 +72,14 @@
 </head>
 <body>
     <h1>所有未處理的訂單</h1>
-    <a href="/order_res_host" class="back-link">返回</a>
+    <a href="{{ url_for('restaurant.order_function') }}" class="back-link">返回</a>
 
     <table id="dataTable">
         <thead>
             <tr>
-                <th>訂單編號</th>
-                <th>餐廳編號</th>
+                <th>訂單編號</th>    
                 <th>訂餐時間</th>
                 <th>總價</th>
-                <th>外送員編號</th>
                 <th>狀態</th>
                 <th>操作</th>
             </tr>
@@ -90,15 +88,13 @@
             {% for item in data %}
             <tr>
                 <td>{{ item.order_id }}</td>
-                <td>{{ item.rest_id }}</td>
                 <td>{{ item.date }}</td>
                 <td>{{ item.total_price }}</td>
-                <td>{{ item.deliver_id }}</td>
                 <td>{{ item.status }}</td>
                 <td>
-                    <form action="/order_res_details" method="post">  
+                    <form action="{{ url_for('restaurant.print_order_details') }}" method="post">  
                         <input type="hidden" name="order_id" value="{{ item.order_id }}">
-                        <button type="submit" class="action-link" style="background-color: #FF0000;">修改訂單</button>
+                        <button type="submit" class="action-link" style="background-color: #FF0000;">查看訂單</button>
                     </form>
                 </td>
             

@@ -35,7 +35,7 @@
         <h3>總金額: {{ order_info['total_price'] }}</h3>
         <h3>送貨地址: {{ delivery_address['addr'] }}</h3>
     
-        {% if order_info['status'] == "pending" %}
+        {% if order_info['status'] == "accepted" %}
             <button onclick="confirmOrder({{ order_info['order_id'] }})">接單</button>
         {% endif %}
     </div>

@@ -45,10 +45,10 @@ body {
 <body>
     <h1>訂單系統</h1>
      <div class="container">
-         <a href="/order_res_list" class="button">查看未處理</a>
-         <a href="/order_res_processing" class="button">查看處理中</a>
-         <a href="/order_res_complete" class="button">查看已完成</a>
-         <a href="/host_res" class="button">返回</a>
+         <a href="{{ url_for('restaurant.print_order') }}" class="button">查看未處理</a>
+         <a href="{{ url_for('restaurant.print_order_processing') }}" class="button">查看處理中</a>
+         <a href="{{ url_for('restaurant.print_order_complete') }}" class="button">查看已完成</a>
+         <a href="{{ url_for('restaurant.host_res') }}" class="button">返回</a>
     </div>
     
     </body>
