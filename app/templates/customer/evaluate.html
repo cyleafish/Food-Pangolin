@@ -56,7 +56,7 @@
     <div class="container">
         <h1>評價</h1>
         <form method="POST">
-            <label for="rest_id">餐廳編號：{{ rest_name }}</label>
+            <label for="rest_id">餐廳：{{ rest_name }}</label>
             <input type="hidden" name="rest_id" value="{{ rest_id }}">
 
             <label for="customer_id">顧客編號：{{ customer_id }}</label>
@@ -74,8 +74,6 @@
             <label for="comment">評論內容：</label>
             <textarea id="comment" name="comment" rows="4" required></textarea>
 
-            <label for="data">評論日期：</label>
-            <input type="date" id="data" name="data" required>
 
             <button type="submit">提交評論</button>
             

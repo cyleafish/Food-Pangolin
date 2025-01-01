@@ -3,7 +3,7 @@ from functools import wraps
 from app.dbUtils.customer_dbUtils import (compare, register_user,
 register_account, getUser, getCustomer, get_restaurants, get_menu_items, 
 get_order_details, add_order, get_order_history, get_details, insert_comment,
-get_restname,get_ordering)
+get_restname,get_ordering,get_restid,if_comment)
 
 # 創建 Blueprint
 customer_bp = Blueprint('customer', __name__, template_folder='../templates/customer')
@@ -183,23 +183,24 @@ def orderhistory():
 def order_details(order_id):
     # 查詢訂單商品明細
     items = get_details(order_id)
-    return render_template('details.html', items=items, order_id=order_id)
+    comment = if_comment(order_id)
+    return render_template('details.html', items=items, order_id=order_id,comment=comment)
 
 @customer_bp.route('/evaluate/<int:order_id>', methods=['GET', 'POST'])
 @login_required
 def evaluate(order_id):
-    restaurant_id = session.get('restaurant_id')
-    rest_name=get_restname(restaurant_id)
+    
+    rest_name=get_restname(order_id)
+    
     customer_id=session.get('customer_id')
 
     if request.method == 'POST':
-        rest_id = request.form['rest_id']
+        rest_id=get_restid(order_id)
         customer_id = request.form['customer_id']
         star = request.form['star']
         comment = request.form['comment']
-        data = request.form['data']
-        insert_comment(rest_id, customer_id, star, comment, data)
+        insert_comment(rest_id, customer_id, order_id,star, comment)
 
         flash('評論提交成功！')
-        return redirect(url_for('order_details',order_id=order_id))
-    return render_template('evaluate.html', order_id=order_id, rest_name=rest_name[0]['restname'], customer_id=customer_id)
+        return redirect(url_for('customer.order_details',order_id=order_id))
+    return render_template('evaluate.html', order_id=order_id, rest_name=rest_name['restname'], customer_id=customer_id)

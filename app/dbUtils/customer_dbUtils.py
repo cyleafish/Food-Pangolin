@@ -198,25 +198,59 @@ def get_details(order_id):
     conn.close()
     return details
 
-def insert_comment(rest_id, customer_id, star, comment, data):
+def insert_comment(rest_id, customer_id, order_id,star, comment):
     conn = get_db_connection()
     cursor=conn.cursor(dictionary=True)
+
     sql = """
-        INSERT INTO comment (rest_id, customer_id, star, comment, data)
-        VALUES (%s, %s, %s, %s, %s)
+        INSERT INTO comment (rest_id, customer_id, order_id,star, comment)
+        VALUES (%s, %s, %s,%s, %s)
     """
-    cursor.execute(sql,(rest_id, customer_id, star, comment, data))
+    cursor.execute(sql,(rest_id, customer_id, order_id,star, comment))
     conn.commit()  
     cursor.close()
     conn.close()
     return 
-
-def get_restname(rest_id):
+def if_comment(order_id):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    sql = "SELECT restname FROM restaurant WHERE rest_id=%s"
-    cursor.execute(sql, (rest_id,))
+    sql = """ SELECT c.order_id, o.status FROM `order` o
+    LEFT JOIN `comment` c ON o.order_id = c.order_id
+    where o.order_id=%s   """
+    cursor.execute(sql, (order_id,))
+    order_id = cursor.fetchone()  # 修改為 fetchone()
+    print(order_id)
+    cursor.close()
+    conn.close()
+    return order_id
+"""
+    if not order_id:
+        return True  # 表示沒有評價
+    return False  # 表示有評價了
+"""
+
+
+def get_restname(order_id):
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    sql = """SELECT o.rest_id ,r.restname FROM `order` o
+    JOIN `restaurant` r ON o.rest_id = r.rest_id
+    WHERE o.order_id=%s"""
+    cursor.execute(sql, (order_id,))
     restname = cursor.fetchone()  # 修改為 fetchone()
     cursor.close()
     conn.close()
     return restname
+
+def get_restid(order_id):
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    sql = """SELECT o.rest_id FROM `order` o
+    WHERE o.order_id=%s"""
+    cursor.execute(sql, (order_id,))
+    restid = cursor.fetchone()  # 修改為 fetchone()
+    cursor.close()
+    conn.close()
+    if restid:
+        return restid['rest_id']  # 提取 'rest_id' 欄位的值
+    return None  # 若沒有找到結果，則返回 None

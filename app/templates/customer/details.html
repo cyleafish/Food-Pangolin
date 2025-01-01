@@ -98,7 +98,10 @@
         </tbody>
     </table>
     <div style="text-align: center; margin-top: 20px;">
-        <a href="{{url_for('customer.evaluate',order_id=order_id) }}">給個評價唄</a>
+    {% if comment.order_id is none and comment.status == 'completed' %}  
+        <a href="{{ url_for('customer.evaluate', order_id=order_id) }}">給個評價唄</a>
+    {% endif %}
+      
     </div>
 {% else %}
     <p style="text-align: center; margin-top: 20px;">目前沒有任何訂單。</p>
