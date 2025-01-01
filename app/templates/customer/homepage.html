@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首頁</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+    <header>
+        <h1>Welcome, {{ user.name }}</h1>
+        <nav>
+            <a href="{{ url_for('auth.logout') }}">
+                <button type="button">登出</button>
+            </a>        
+        </nav>
+    </header>
+
+    <main>
+        <h2>您的個人資料</h2>
+        <p><strong>姓名:</strong> {{ user.name }}</p>
+        <p><strong>信箱:</strong> {{ user.email }}</p>
+        <p><strong>手機號碼:</strong> {{ user.phone }}</p>
+        <p><strong>住家地址:</strong> {{ user.address }}</p>
+
+        <section class="actions">
+            <form action="{{ url_for('customer.customer') }}" method="post">
+                <button type="submit" class="register-button">點餐</button>
+            </form>
+            <form action="{{ url_for('customer.orderhistory') }}" method="get">
+                <button type="submit" class="register-button">查看點餐紀錄</button>
+            </form>
+        </section>
+
+        
+    </main>
+    <main>
+        <h2>目前訂單</h2>
+        {% if order %}
+        <table>
+            <thead>
+                <tr>
+                    <th>訂單編號</th>
+                    <th>總金額</th>
+                    <th>狀態</th>
+                    <th>送貨員編號</th>
+                    <th>取餐</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in order %}
+                    <tr>
+                        <td>{{ order.order_id }}</td>
+                        <td>{{ order.total_price }}</td>
+                        <td>{{ order.status }}</td>
+                        <td>{{ order.deliver_id }}</td>
+                        <td>
+                        {% if order.status=='arrived' %}
+                        <a href="{{ url_for('customer.update_order_status_route', order_id=order['order_id'], new_status='taked') }}">
+                            <button>已拿到餐點</button>
+                        </a></td>
+                        {%endif%}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <p>目前沒有訂單。</p>
+        {% endif %}
+        </main>
+
+</body>
+</html>

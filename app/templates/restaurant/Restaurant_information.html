@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>餐廳資訊</title>
-    <style>
+    <!-- <style>
       body {
         font-family: 'Arial', sans-serif;
         margin: 0;
@@ -67,12 +67,12 @@
       .btn-back:hover {
         background-color: #c9302c;
       }
-    </style>
+    </style> -->
   </head>
   <body>
     <h2>餐廳資訊</h2>
     {% if data %}
-    <form action="/edit_restaurant" method="post">
+    <form action="{{ url_for('restaurant.edit_restaurant') }}" method="post">
       <input type="hidden" id="rest_id" name="rest_id" value="{{ data[0].rest_id }}">
       <label for="restname">餐廳名</label>
       <input type="text" id="restname" name="restname" value="{{ data[0].restname }}" required>
@@ -83,6 +83,6 @@
       <button type="submit" class="save-button">保存變更</button>
     </form>
     {% endif %}
-    <a href="/host_res" class="back-link">取消並返回</a>
+    <a href="{{ url_for('restaurant.host_res') }}" class="back-link">取消並返回</a>
   </body>
 </html>

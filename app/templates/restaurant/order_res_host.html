@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>訂單</title>
-    <style>
+    <!-- <style>
 body {
   font-family: sans-serif;
   display: flex;
@@ -40,15 +40,15 @@ body {
 .button:hover {
   background-color: #45a049; /*  深綠色  */
 }
-    </style>
+    </style> -->
 </head>
 <body>
     <h1>訂單系統</h1>
      <div class="container">
-         <a href="/order_res_list" class="button">查看未處理</a>
-         <a href="/order_res_processing" class="button">查看處理中</a>
-         <a href="/order_res_complete" class="button">查看已完成</a>
-         <a href="/host_res" class="button">返回</a>
+         <a href="{{ url_for('restaurant.print_order') }}" class="button">查看未處理</a>
+         <a href="{{ url_for('restaurant.print_order_processing') }}" class="button">查看處理中</a>
+         <a href="{{ url_for('restaurant.print_order_complete') }}" class="button">查看已完成</a>
+         <a href="{{ url_for('restaurant.host_res') }}" class="button">返回</a>
     </div>
     
     </body>

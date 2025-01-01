@@ -54,12 +54,13 @@ def register_deliver_account(username, password, phone, car_num):
 """
 
 
-def fetch_pending_orders(order_by=None):
+def fetch_accepted_orders(order_by=None):
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
     query = """
         SELECT 
             o.order_id, 
+            o.status,
             o.total_price, 
             o.addr AS customer_addr,
             c.name, 
@@ -70,7 +71,7 @@ def fetch_pending_orders(order_by=None):
         JOIN customer c ON o.customer_id = c.customer_id
         JOIN restaurant r ON o.rest_id = r.rest_id
         LEFT JOIN customer_star cs ON c.customer_id = cs.customer_id
-        WHERE o.deliver_id IS NULL
+        WHERE  o.status='pending' OR o.status='prepared'
         GROUP BY o.order_id, c.name, r.restname
     """
     if order_by == "price":
@@ -179,7 +180,7 @@ def get_delivery_address(order_id):
 
     return delivery_address
 
-def accepted_order(order_id, deliver_id):
+def on_delivery_order(order_id, deliver_id):
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
 
@@ -187,7 +188,7 @@ def accepted_order(order_id, deliver_id):
         query = """
             UPDATE `order`
             SET status = 'accepted', deliver_id = %s
-            WHERE order_id = %s AND status = 'pending';
+            WHERE order_id = %s AND (status = 'pending' OR status = 'prepared');
         """
         cursor.execute(query, (deliver_id, order_id))
         connection.commit()

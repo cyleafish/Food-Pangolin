@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>所有訂單</title>
-    <style>
+    <!-- <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f9;
@@ -68,11 +68,11 @@
         .back-button:hover {
             background-color: #d32f2f;
         }
-    </style>
+    </style> -->
 </head>
 <body>
     <h1>所有完成訂單</h1>
-    <a href="/order_res_host" class="back-link">返回</a>
+    <a href="{{ url_for('restaurant.order_function') }}" class="back-link">返回</a>
 
     <table id="dataTable">
         <thead>

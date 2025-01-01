@@ -2,7 +2,7 @@ import os
 from flask import Flask,Blueprint, render_template, url_for,request, session, redirect
 from functools import wraps
 from app.dbUtils.restaurant_dbUtils import (getList,addmenu
-,getuser_id,create_rest,register_user,getmenuedit,get_all_menu
+,getuser_id,getmenuedit,get_all_menu
 ,update_menu,delete_menu,get_resturant_info,update_rest,getrestid
 ,getorderlist,getcomplite,getprocessing,getorderdetails
 ,update_status)
@@ -11,11 +11,10 @@ from app.dbUtils.restaurant_dbUtils import (getList,addmenu
 restaurant_bp = Blueprint('restaurant', __name__, template_folder='../templates/restaurant')
 
 # creates a Flask application, specify a static folder on /
-restaurant_app = Flask(__name__, static_folder='static/image',static_url_path='/image/')
-
+restaurant_app = Flask(__name__, static_folder='static', static_url_path='/static')
 #set a secret key to hash cookies
 restaurant_app.config['SECRET_KEY'] = '123TyU%^&'
-UPLOAD_FOLDER = 'static/image'  # 設定圖片上傳資料夾
+UPLOAD_FOLDER = 'app/static'  # 設定圖片上傳資料夾
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}  # 設定允許的圖片格式
 
 restaurant_app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -80,6 +79,11 @@ def login():
 @restaurant_bp.route('/host_res', methods=['GET'])
 @login_required
 def host_res():
+    username=session['username']
+    user_id=getuser_id(username)
+    rest_id=getrestid(user_id['user_id'])
+    session['rest_id'] = rest_id
+    print(rest_id)
     return render_template('host_res.html')
 
 
@@ -158,7 +162,7 @@ def delete_item():
     menu_id = request.form['menu_id']
     if menu_id:
         delete_menu(menu_id)
-    return redirect('/menu_res')
+    return redirect(url_for('restaurant.menu_res'))
 
 #看餐廳資訊
 @restaurant_bp.route('/Restaurant', methods=['GET','POST'])
@@ -182,7 +186,7 @@ def edit_restaurant():
     print(data)
     update_rest(data['rest_id'],data)
     
-    return redirect('/host_res')
+    return redirect(url_for('restaurant.restaurant_info'))
 
 
 @restaurant_bp.route("/order_res_host")  # 只允許 POST 方法
@@ -222,7 +226,7 @@ def print_order_processing():
     return render_template('order_res_processing.html', data=items)
 
 
-#取得訂單資料
+#取得訂單資料(process)
 @restaurant_bp.route("/order_res_details", methods=['GET', 'POST']) 
 @login_required
 def print_order_details():
@@ -230,6 +234,13 @@ def print_order_details():
     items = getorderdetails(order_id)  # 使用 db.py 中的 getorderdetails 函式
     return render_template('order_res_details.html', data=items)
 
+#取得訂單資料(accepted)
+@restaurant_bp.route("/order_res_details_acc", methods=['GET', 'POST']) 
+@login_required
+def print_order_details_acc():
+    order_id =request.form.get('order_id')
+    items = getorderdetails(order_id)  # 使用 db.py 中的 getorderdetails 函式
+    return render_template('order_res_details_acc.html', data=items)
 
 @restaurant_bp.route("/order_res_update_details", methods=['POST']) 
 @login_required
@@ -238,4 +249,7 @@ def update_order_details():
     order_id = request.form.get('order_id')  # 從查詢參數獲取 order_id
     print(order_id, status)
     update_status(order_id, status) 
-    return redirect('/order_res_host')
+    if status =='pending':
+        return redirect(url_for('restaurant.print_order'))
+    elif status =='prepared':
+        return redirect(url_for('restaurant.print_order_processing'))

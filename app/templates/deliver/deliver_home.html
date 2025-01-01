@@ -30,9 +30,10 @@
         <ul>
             {% for order in orders %}
             <li>
-                訂單編號: {{ order['order_id'] }}, 金額: {{ order['total_price'] }}, <a href="https://www.google.com/maps/dir/?api=1&destination={{ order['restaurant_addr'] }}" target= '_blank'>商家: {{ order['restname'] }}</a>, 顧客: {{ order['name'] }}, 星級: {{ order['star'] }}
+                訂單編號: {{ order['order_id'] }}, 金額: {{ order['total_price'] }},狀態: {{ order['status'] }}, <a href="https://www.google.com/maps/dir/?api=1&destination={{ order['restaurant_addr'] }}" target= '_blank'>商家: {{ order['restname'] }}</a>, 顧客: {{ order['name'] }}, 星級: {{ order['star'] }}
                 <a href="{{ url_for('deliver.order_info', order_id=order['order_id']) }}">查看訂單詳情</a>
-                <button onclick="confirmOrder({{ order['order_id'] }})">接單</button>
+                <button onclick="confirmOrder('{{ url_for('deliver.accept_order', order_id=order['order_id']) }}')">接單</button>
+
             </li>
             {% endfor %}
         </ul>
@@ -56,8 +57,9 @@
                             <button>已到達</button>
                         </a>
                     
-                    {% elif order['status'] == 'arrived' %}
-                        <button onclick="openRatingModal({{ order['order_id'] }})">送餐完成並評分</button>
+                    {% elif order['status'] == 'taked' %}
+                    <button onclick="openRatingModal('{{ url_for('deliver.rate_customer_and_complete', order_id=order['order_id']) }}')">送餐完成並評分</button>
+
                     {% endif %}
 
                     
