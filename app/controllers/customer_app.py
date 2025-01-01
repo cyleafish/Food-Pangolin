@@ -3,7 +3,7 @@ from functools import wraps
 from app.dbUtils.customer_dbUtils import (compare, register_user,
 register_account, getUser, getCustomer, get_restaurants, get_menu_items, 
 get_order_details, add_order, get_order_history, get_details, insert_comment,
-get_restname,get_ordering,get_restid,if_comment)
+get_restname,get_ordering,get_restid,if_comment,update_order_status)
 
 # 創建 Blueprint
 customer_bp = Blueprint('customer', __name__, template_folder='../templates/customer')
@@ -169,12 +169,26 @@ def order_finish():
     order=add_order(customer_id,cart,order_details,user)
     return render_template('orderfinish.html',order=order,cart=order_details,total_price=total_price,user=user)
 
+@customer_bp.route('/update_order_status/<int:order_id>/<new_status>', methods=['GET'])
+def update_order_status_route(order_id, new_status):
+    customer_id = session.get('customer_id')
+    if not customer_id:
+        flash('請先登入')
+        return redirect(url_for('auth.login'))
+    
+    success = update_order_status(order_id, new_status)
+
+    if success:
+        return redirect(url_for('customer.homepage'))
+    else:
+        return "狀態更新失敗", 500
+    
 @customer_bp.route('/orderhistory', methods=['GET'])
 def orderhistory():
     customer_id = session.get('customer_id')
     if not customer_id:
         flash('請先登入')
-        return redirect(url_for('login'))
+        return redirect(url_for('auth.login'))
     orders = get_order_history(customer_id)
     return render_template('history.html', orders=orders)
 

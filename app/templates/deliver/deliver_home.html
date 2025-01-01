@@ -57,7 +57,7 @@
                             <button>已到達</button>
                         </a>
                     
-                    {% elif order['status'] == 'arrived' %}
+                    {% elif order['status'] == 'taked' %}
                     <button onclick="openRatingModal('{{ url_for('deliver.rate_customer_and_complete', order_id=order['order_id']) }}')">送餐完成並評分</button>
 
                     {% endif %}

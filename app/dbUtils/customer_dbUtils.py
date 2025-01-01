@@ -254,3 +254,21 @@ def get_restid(order_id):
     if restid:
         return restid['rest_id']  # 提取 'rest_id' 欄位的值
     return None  # 若沒有找到結果，則返回 None
+
+def update_order_status(order_id, new_status):
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+    query = """
+            UPDATE `order`
+            SET `status` = %s
+            WHERE `order_id` = %s
+        """
+    cursor.execute(query, (new_status, order_id))
+
+    connection.commit()
+    success = True
+
+    cursor.close()
+    connection.close()
+    
+    return success
