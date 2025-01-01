@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>訂單</title>
+    <link rel="stylesheet" href="C:\Users\User\Desktop\新css\static\style.css">
+
+</head>
+<body>
+  <header>
+    <h2>訂單系統</h2>
+</header>
+     <div class="container">
+         <a href="{{ url_for('restaurant.print_order') }}" class="button"></a><button>查看未處理</button><br><br>
+         <a href="{{ url_for('restaurant.print_order_processing') }}" class="button"></a><button>查看處理中</button><br><br>
+         <a href="{{ url_for('restaurant.print_order_complete') }}" class="button"></a><button>查看已完成</button><br><br>
+         <a href="{{ url_for('restaurant.host_res') }}" class="button"></a><button>返回</button><br><br>
+    </div>
+    
+    </body>
+    <footer>
+      <p>@巴豆妖免歡樂娛樂平台</p>
+    </footer>
+    </html>

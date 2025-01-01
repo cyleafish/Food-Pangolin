@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>主頁</title>
+  <link rel="stylesheet" href="C:\Users\User\Desktop\新css\static\style.css">
+
+</head>
+
+<body>
+  <header>
+    <h2>功能表</h2>
+  </header>
+  <div class="test">
+    <h2>如果是剛註冊第一次登入請先修改餐廳資訊</h2></br>
+  </div>
+
+  <div class="container">
+    <a href="{{ url_for('restaurant.menu_res') }}"></a><button>menu</button><br><br>
+    <a href="{{ url_for('restaurant.order_function') }}"></a><button>order</button><br><br>
+    <a href="{{ url_for('restaurant.restaurant_info') }}"></a><button>餐廳資訊</button><br><br>
+    <a href="{{ url_for('auth.logout') }}"></a><button>登出</button><br><br>
+  </div>
+  <footer>
+    <p>@巴豆妖免歡樂娛樂平台</p>
+  </footer>
+</body>
+</html>

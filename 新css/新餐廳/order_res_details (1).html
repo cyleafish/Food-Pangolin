@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>訂單細項</title>
+    <link rel="stylesheet" href="C:\Users\User\Desktop\新css\static\style.css">
+
+</head>
+<body>
+    <header>
+        <h2>訂單細項</h2>
+    </header>
+{{order_id}}
+<table>
+    <thead>
+        <tr>
+            <th>品項名稱</th>
+            <th>數量</th>
+            <th>價格</th>
+            <th>備註</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in data %}
+        <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.price }}</td>
+            <td>{{ item.note }}</td>
+        </tr>
+        {% endfor %}
+</tbody>
+</table>
+
+<div>
+    
+
+    <form action="{{ url_for('restaurant.update_order_details') }}" method="POST">
+        <label for="status">修改狀態:</label>
+        <select id="status" name="status"> 
+            <option value="pending">接單</option>
+            <option value="cancelled">拒絕接單</option>
+        </select>
+        <input type="hidden" name="order_id" value="{{ data[0].order_id }}"> 
+    
+        <button type="submit">保存</button> 
+    </form>
+</div>
+<a href="{{ url_for('restaurant.order_function') }}" class="back-link">返回</a>
+
+
+
+</body>
+<footer>
+    <p>@巴豆妖免歡樂娛樂平台</p>
+  </footer>
+</html>

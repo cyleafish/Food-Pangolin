@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>顧客應付款金額</title>
+    <link rel="stylesheet" href="C:\Users\User\Desktop\新css\static\style.css">
+</head>
+<body>
+    <header>
+        <h2>顧客應付款項</h2>
+    </header>
+    <table border="1">
+        <tr>
+            <th>顧客名稱</th>
+            <th>應付款金額</th>
+        </tr>
+        {% for customer in customers %}
+        <tr>
+            <td>{{ customer.customer_name }}</td>
+            <td>{{ customer.payments }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="/">返回首頁</a>
+</body>
+<footer>
+    <p>@巴豆妖免歡樂娛樂平台</p>
+  </footer>
+</html>

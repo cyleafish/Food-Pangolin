@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>點餐紀錄</title>
+    <link rel="stylesheet" href="C:\Users\User\Desktop\新css\static\style.css">
+</head>
+
+<body>
+    <header>
+        <h1>點餐紀錄</h1>
+    </header>
+    <table>
+        <thead>
+            <tr>
+                <th>訂單編號</th>
+                <th>餐廳名稱</th>
+                <th>總花費</th>
+                <th>狀態</th>
+                <th>點餐時間</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.order_id }}</td>
+                <td>{{ order.rest_name }}</td>
+                <td>${{ order.total_price }}</td>
+                <td>{{ order.status }}</td>
+                <td>{{ order.date }}</td>
+                <td><a href="{{url_for('customer.order_details',order_id=order.order_id) }}">訂單詳情</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ url_for('customer.homepage') }}">回首頁</a>
+    <footer>
+        <p>@巴豆妖免歡樂娛樂平台</p>
+    </footer>
+</body>
+</html>

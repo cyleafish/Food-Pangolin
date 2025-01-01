@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>外送小哥接單數</title>
+    <link rel="stylesheet" href="C:\Users\User\Desktop\新css\static\style.css">
+</head>
+<body>
+    <header>
+        <h2>外送小哥接單數</h2>
+    </header>
+    <table border="1">
+        <tr>
+            <th>外送員名稱</th>
+            <th>接單數</th>
+        </tr>
+        {% for deliver in delivers %}
+        <tr>
+            <td>{{ deliver.deliver_name }}</td>
+            <td>{{ deliver.orders }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="/">返回首頁</a>
+</body>
+<footer>
+    <p>@巴豆妖免歡樂娛樂平台</p>
+  </footer>
+</html>

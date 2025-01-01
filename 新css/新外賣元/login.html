@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="C:\Users\User\Desktop\新css\static\style.css">
+    <title>登入</title>
+</head>
+<body>
+    <header>
+        <h1>登入</h1>
+    </header>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="flash-messages">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
+    <form method="POST" action="{{ url_for('login') }}">
+        <label for="username">帳號：</label>
+        <input type="text" id="username" name="username" required><br>
+        <br>
+        <label for="password">密碼：</label>
+        <input type="password" id="password" name="password" required><br>
+        <br>
+        <button type="submit">登入</button>
+        <button onclick="location.href='{{ url_for('register_deliver') }}'">註冊</button>
+    </form>
+    <footer>
+        <p>&copy; 巴豆妖免歡樂平台</p>
+    </footer>
+</body>
+</html>

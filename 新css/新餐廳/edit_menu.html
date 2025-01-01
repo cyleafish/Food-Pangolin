@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>編輯菜品</title>
+    <link rel="stylesheet" href="C:\Users\User\Desktop\新css\static\style.css">
+
+</head>
+<body>
+    <header>
+        <h2>編輯菜品</h2>
+    </header>
+    
+
+    <!-- 編輯物品的表單 -->
+
+    <form action="{{ url_for('restaurant.menu_update') }}" method="post">
+        <input type="hidden" id="menu_id" name="menu_id" value="{{ item.menu_id }}">
+
+        <br><label for="name">菜名</label>
+        <input type="text" id="name" name="name" value="{{ item.name }}" required><br>
+
+        <label for="price">單價</label>
+        <input type="number" id="price" name="price" value="{{ item.price }}" required><br>
+
+        <label for="description">內容</label>
+        <input type="text" id="description" name="description" value="{{ item.description }}" required><br><br>
+
+        <!-- 保存變更按鈕 -->
+        <button type="submit" class="save-button">保存變更</button>
+    </form>
+
+    <!-- 刪除物品的表單 -->
+    <form action="{{ url_for('restaurant.delete_item') }}" method="post">
+        <input type="hidden" name="menu_id" value="{{ item.menu_id }}">
+        <button type="submit" class="delete-button">刪除菜品</button>
+    </form>
+
+    <!-- 返回按鈕 -->
+    <a href="{{ url_for('restaurant.menu_res') }}" class="back-link">取消並返回</a>
+    <footer>
+        <p>@巴豆妖免歡樂娛樂平台</p>
+    </footer>
+</body>
+</html>
