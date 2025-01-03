@@ -1,5 +1,7 @@
 # Food-Pangolin
-1131軟體工程期末專題
+1131軟體工程期末專題  
+第十二組  
+111213001 葉芷妤 111213012 郭方朔 111213066 蔡家生 111213070 郭于擎  
 ![image](https://github.com/user-attachments/assets/31998aed-5cc6-4f74-ac08-30b59605d47f)
 ## 筆記 https://hackmd.io/@leafish/H1a48wHHyg/edit
 
