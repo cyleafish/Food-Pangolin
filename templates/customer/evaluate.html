@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="\static\css\style.css">
+    <title>評論訂單</title>
+    
+</head>
+<body>
+    <header>
+        <h1>評價</h1>
+    </header>
+        <form class="menu-form" method="POST">
+            <label for="rest_id">餐廳：{{ rest_name }}</label>
+            <input type="hidden" name="rest_id" value="{{ rest_id }}">
+
+            <label for="customer_id">顧客編號：{{ customer_id }}</label>
+            <input type="hidden" name="customer_id" value="{{ customer_id }}">
+
+            <label for="star">評分：</label><br>
+            <select id="star" name="star" required>
+                <option value="5">5 &#9733</option>
+                <option value="4">4 &#9733</option>
+                <option value="3">3 &#9733</option>
+                <option value="2">2 &#9733</option>
+                <option value="1">1 &#9733</option>
+            </select>
+
+            <label for="comment">評論內容：</label>
+            <textarea id="comment" name="comment" rows="4" required></textarea>
+
+            <br>
+            <button type="submit">提交評論</button>
+            
+        </form>
+        <a href="{{url_for('customer.order_details',order_id=order_id) }}">返回</a>
+
+    </body>
+</html>
+

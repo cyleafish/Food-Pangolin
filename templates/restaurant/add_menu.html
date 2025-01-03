@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新增菜品</title>
+    <link rel="stylesheet" href="..\static\css\style.css">
+    </head>
+<style>
+
+</style>
+<body>
+    <header>
+        <h2>新增料理</h2>
+    </header>
+    <div class="container">
+        <form class="menu-form" action="{{ url_for('restaurant.ad_menu') }}" method="post" enctype="multipart/form-data">
+            <label for="name">菜名:</label>
+            <input type="text" id="name" name="name" required><br>
+
+            <label for="description">敘述:</label>
+            <textarea id="description" name="description" rows="4" required></textarea><br>
+
+            <label for="price">單價:</label>
+            <input type="number" id="price" name="price" required><br>
+
+            <label for="itemImage">上傳圖片:</label>
+            <input type="file" id="itemImage" name="itemImage" accept="image/*"><br>
+            <br>
+            <br>
+
+            <button type="submit" class="btn">新增</button>
+        </form>
+        <a href="{{ url_for('restaurant.menu_res') }}" class="back-link">返回</a>
+    </div>
+
+</body>
+</html>

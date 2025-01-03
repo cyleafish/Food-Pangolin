@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Pangolin Platform</title>
+    <link rel="stylesheet" href="..\static\css\style.css">
+</head>
+<body>
+    
+    <header>
+        <h1>Food Pangolin Platform</h1>
+        <nav style="position: absolute; right: 10px; top: 10px;">
+            <a href="{{ url_for('auth.logout') }}" style="color: #353589;">登出</a>
+        </nav>
+    </header>
+    <br><br><br>
+    <ul>
+        <button><a href="{{ url_for('platform.merchant_earnings') }}">商家應收金額</a></button>
+        <button><a href="{{ url_for('platform.deliver_orders') }}">外送小哥接單數</a></button>
+        <button><a href="{{ url_for('platform.customer_payments') }}">顧客應付款金額</a></button>
+    </ul>
+</body>
+
+</html>

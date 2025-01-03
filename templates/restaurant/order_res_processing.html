@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>所有訂單</title>
+    <link rel="stylesheet" href="..\static\css\style.css">
+</head>
+<body>
+    <header>
+        <h2>所有處理中的訂單</h2>
+    </header>
+    <a href="{{ url_for('restaurant.order_function') }}" class="back-link">返回</a>
+
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>訂單編號</th>
+                <th>餐廳編號</th>
+                <th>訂餐時間</th>
+                <th>總價</th>
+                <th>外送員編號</th>
+                <th>狀態</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in data %}
+            <tr>
+                <td>{{ item.order_id }}</td>
+                <td>{{ item.rest_id }}</td>
+                <td>{{ item.date }}</td>
+                <td>{{ item.total_price }}</td>
+                <td>{{ item.deliver_id }}</td>
+                <td>{{ item.status }}</td>
+                <td>
+                    <form class="custom-form" action="{{ url_for('restaurant.print_order_details_acc') }}" method="post">  
+                        <input type="hidden" name="order_id" value="{{ item.order_id }}">
+                        <br><button type="submit" class="action-link" style="font-size: 14px;">查看訂單</button>
+                    </form>
+                </td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+        </tbody>
+    </table>
+</body>
+
+</html>

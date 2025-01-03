@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="..\static\css\style.css">
+    <title>菜單</title>
+    
+</head>
+<body>
+    <header>
+        <h1>{{ restname }} 菜品列表 </h1>
+        <a href="{{ url_for('customer.reviews',rest_id=restaurant) }}">評論</a>
+    </header>    
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul><br>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% endwith %}
+    <nav>
+      <a href="{{ url_for('customer.customer') }}">返回</a>
+    </nav>
+    <form action="{{ url_for('customer.confirm_order') }}" method="post">
+        <input type="hidden" name="restaurant" value="{{ restaurant }}">
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>菜圖</th>
+                <th>菜名</th>
+                <th>售價</th>
+                <th>介紹</th>
+                <th>數量</th>
+                <th>備註</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in menu_items %}
+            <tr>
+                <td><img src="{{ url_for('static', filename=item.filename) }}" alt="{{ item.name }}"></td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.price }}</td>
+                <td>{{ item.description }}</td>
+                <td>
+                    <input type="number" name="quantity_{{ item.menu_id }}" min="0" max="10" value="0">
+                </td>
+                <td>
+                    <input type="text" name="note_{{ item.menu_id }}" placeholder="備註">
+                </td>
+            </tr> 
+            {% endfor %}
+        </tbody>
+    </table><br>
+    <button type="submit">下單</button>
+</form>
+
+</body>
+</html>

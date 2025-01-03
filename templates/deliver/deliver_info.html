@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>外送員資訊</title>
+    <link rel="stylesheet" href="..\static\css\style.css">
+</head>
+<body>
+    <header>
+        <nav style="position: absolute; right: 10px; top: 10px;">
+            <a href="{{ url_for('deliver.deliver_home') }}" style="color: #353589;">返回首頁</a>
+        </nav>
+        <h1>外送員資訊</h1>
+    </header>
+    <div>
+        <p>姓名: {{ info['deliver_name'] }}</p>
+        <p>星級: {{ info['star'] }}</p>
+        <p>手機: {{ info['phone'] }}</p>
+        <p>車牌: {{ info['car_num'] }}</p>
+
+    </div>
+
+</body>
+</html>

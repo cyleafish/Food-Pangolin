@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>顧客註冊</title>
+    <link rel="stylesheet" href="..\static\css\style.css">
+</head>
+<body>
+    <h1>顧客註冊</h1>
+    <form class="menu-form" method="POST">
+        <label for="username">帳號:</label>
+        <input type="text" id="username" name="username" required>
+        <br>
+        <label for="password">密碼:</label>
+        <input type="password" id="password" name="password" required>
+        <br>
+        <label for="phone">電話:</label>
+        <input type="tel" id="phone" name="phone" required>
+        <br>
+        <label for="addr">地址:</label>
+        <input type="text" id="addr" name="addr" required>
+        <br>
+        <label for="email">電子郵件:</label>
+        <input type="email" id="email" name="email" required>
+        <br>
+        <button type="submit">註冊</button>
+    </form>
+    <a href="{{ url_for('auth.register_merchant') }}">
+        <button>註冊商家</button>
+    </a>
+    <a href="{{ url_for('auth.register_deliver') }}">
+        <button>註冊外送員</button>
+    </a><br>
+    <a href="{{ url_for('auth.login') }}">
+        <button>返回登入</button>
+    </a>
+</body>
+</html>
