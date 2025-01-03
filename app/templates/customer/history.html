@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/css/style.css">
     <title>點餐紀錄</title>
-    
+    <link rel="stylesheet" href="..\static\css\style.css">
 </head>
+
 <body>
-    <h1>點餐紀錄</h1>
+    <header>
+        <h1>點餐紀錄</h1>
+    </header>
     <table>
         <thead>
             <tr>
@@ -34,5 +36,6 @@
         </tbody>
     </table>
     <a href="{{ url_for('customer.homepage') }}">回首頁</a>
+
 </body>
 </html>

@@ -4,17 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>外送員首頁</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="..\static\css\style.css">
     <script src="{{ url_for('static', filename='script.js') }}" defer></script>
 </head>
 <body>
     <header>
-        <a href="{{ url_for('deliver.deliver_info') }}"><img src="{{ url_for('static', filename='avatar.png') }}" alt="頭像" class="avatar"></a>
+
         <h1>外送員首頁</h1>
     </header>
+
     <div> 
         <!-- 歷史訂單 -->
         <h2>歷史訂單</h2>
+        <a href="{{ url_for('deliver.deliver_home') }}">返回首頁</a>
         <ul>
             {% for history in deliver_history %}
             <li>

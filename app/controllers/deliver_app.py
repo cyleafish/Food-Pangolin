@@ -8,20 +8,7 @@ fetch_deliver_id,get_current_orders,get_deliver_history,on_delivery_order,add_cu
 # 創建 Blueprint
 deliver_bp = Blueprint('deliver', __name__, template_folder='../templates/deliver')
 
-# @deliver_bp.route('/', methods=['GET', 'POST'])
-# def login():
-#     if request.method == 'POST':
-#         username = request.form.get('username')
-#         password = request.form.get('password')
-#         user = verify_user(username, password)
-#         if user:
-#             session['user_id'] = user['user_id']
-#             session['role'] = user['role']
-#             session['username'] = user['username']
-#             if user['role'] == 'deliver':
-#                 return redirect(url_for('deliver_home'))
-#         return "登入失敗，請檢查帳號密碼"
-#     return render_template('login.html')
+
 
 @deliver_bp.route('/deliver_home')
 def deliver_home():
@@ -71,7 +58,7 @@ def history_order():
     return render_template('history_order.html',deliver_history=deliver_history
     )
 
-@deliver_bp.route('/deliver/info', methods=['GET'])
+@deliver_bp.route('/info', methods=['GET'])
 def deliver_info():
     if session.get('role') != 'deliver':
         return redirect(url_for('login'))

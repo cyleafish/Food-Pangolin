@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>訂單詳情</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+</head>
+<body>
+    <header>
+        <a href="{{ url_for('deliver.deliver_home') }}"><img src="{{ url_for('static', filename='avatar.png') }}" alt="頭像" class="avatar"></a>
+        <h1>訂單詳情</h1>
+    </header>
+    <div>
+        <h2>訂單基本資訊</h2>
+        <p>訂單編號: {{ order_info['order_id'] }}</p>
+        <p>總金額: {{ order_info['total_price'] }}</p>
+        <p>商家: {{ order_info['restname'] }}</p>
+        <p>顧客: {{ order_info['customer_name'] }}</p>
+        <p>顧客星級: {{ order_info['star'] }}</p>
+
+        <h3>訂單內容</h3>
+        <ul>
+            {% for detail in order_details %}
+            <li>
+                餐點: {{ detail['name'] }},
+                數量: {{ detail['quantity'] }},
+                單價: {{ detail['price'] }},
+                小計: {{ detail['total_price'] }},
+                備註: {{ detail['note'] }}
+            </li>
+            {% endfor %}
+        </ul>
+        <h3>總金額: {{ order_info['total_price'] }}</h3>
+        <h3>送貨地址: {{ delivery_address['addr'] }}</h3>
+    
+        {% if order_info['status'] == "accepted" %}
+            <button onclick="confirmOrder({{ order_info['order_id'] }})">接單</button>
+        {% endif %}
+    </div>
+    <a href="{{ url_for('deliver.deliver_home') }}">返回首頁</a>
+</body>
+</html>

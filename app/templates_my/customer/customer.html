@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>客人之家</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+    <!-- <style>
+
+
+        .restaurant-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+
+        .restaurant {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            width: 280px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .restaurant h3 {
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .restaurant p {
+            margin-bottom: 1rem;
+            color: #666;
+        }
+
+        .restaurant .button {
+            display: inline-block;
+            background-color: #353589;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .restaurant .button:hover {
+            background-color: #4591a0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: #333;
+            color: white;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style> -->
+<body>
+    <header>
+        <h1>Welcome!</h1>
+        <nav>
+            <a href="{{ url_for('customer.homepage') }}">回首頁</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Restaurants</h2>
+        <div class="restaurant-list">
+            {% for restaurant in restaurants %}
+            <div class="restaurant">
+                <h3>{{ restaurant.restname }}</h3> <!-- 顯示餐廳名稱 -->
+                <p>地址: {{ restaurant.addr }}</p> <!-- 顯示餐廳地址 -->
+                <p>電話: {{ restaurant.phone }}</p> <!-- 顯示餐廳電話 -->
+                <a href="{{url_for('customer.menu',id=restaurant.rest_id) }}" class="button">menu</a>
+            </div>
+            
+            {% endfor %}
+        </div>
+    </main>
+
+</body>
+</html>

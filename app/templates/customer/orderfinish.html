@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>訂單完成</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="..\static\css\style.css">
     
 </head>
 <body>
     <header>
         <h1>訂單完成</h1>
-        <nav>
-            <a href="{{ url_for('customer.homepage') }}">回首頁</a>
+        <nav style="position: absolute; right: 10px; top: 10px;">
+            
         </nav>
+    </header>
     </header>
 
     <main>
@@ -32,10 +33,8 @@
                 <h3 class="total-price">總金額：$<span id="total-amount">{{ total_price }}</span></h3>
             </div>
         </div>
-
-        
-
-
+        <button><a href="{{ url_for('customer.homepage') }}" style="color: #353589;">回首頁</a></button>
     </main>
+
 </body>
 </html>

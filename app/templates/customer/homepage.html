@@ -4,16 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>首頁</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="..\static\css\style.css">
 </head>
 
 <body>
     <header>
-        <h1>Welcome, {{ user.name }}</h1>
-        <nav>
-            <a href="{{ url_for('auth.logout') }}">
-                <button type="button">登出</button>
-            </a>        
+        <h1>歡迎, {{ user.name }}</h1>
+        <nav style="position: absolute; right: 10px; top: 10px;">
+            <a href="{{ url_for('auth.logout') }}" style="color: #353589;">登出</a>
         </nav>
     </header>
 

@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Confirm Order</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="..\static\css\style.css">
 </head>
 
 <body>
-    <div class="container">
-        <h2>確定要送出訂單嗎</h2>
+        <header>
+            <h1>確定要送出訂單嗎？</h1>
+        </header>
         <form action="{{ url_for('customer.order_finish') }}" method="post">
         <div id="orderDetails">
             {% for item in cart %}
@@ -18,6 +19,7 @@
                 <p>數量: {{ item.quantity }}</p>
                 <p>價格: ${{ item.price }}</p>
                 <p>小計: ${{ item.price * item.quantity }}</p>
+                <p>備註: {{ item.note }}</p>
             </div>
             {% endfor %}
             <h3>總金額: ${{ total_price }}</h3>
@@ -28,9 +30,6 @@
         <a href="{{url_for('customer.menu',id=restaurant) }}">取消
         </a>
     </div>
-    
 
-
-    
 </body>
 </html>

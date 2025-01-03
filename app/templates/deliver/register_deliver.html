@@ -4,29 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>註冊</title>
+    <link rel="stylesheet" href="\static\css\style.css">
 </head>
 <body>
-    <h1>註冊</h1>
+    <header>
+        <h1>註冊外送員</h1>
+    </header>
     {% if message %}
         <p style="color: green;">{{ message }}</p>
     {% elif error %}
         <p style="color: red;">{{ error }}</p>
     {% endif %}
-    <form method="POST" action="{{ url_for('auth.register_deliver') }}">
+    <form class="menu-form" method="POST" action="{{ url_for('auth.register_deliver') }}">
         <label for="username">姓名：</label>
-        <input type="text" id="username" name="username" required><br>
+        <input type="text" id="username" name="username" required><br><br>
 
         <label for="password">密碼：</label>
-        <input type="password" id="password" name="password" required><br>
+        <input type="password" id="password" name="password" required><br><br>
 
         <label for="phone">電話：</label>
-        <input type="text" id="phone" name="phone" required><br>
+        <input type="text" id="phone" name="phone" required><br><br>
 
         <label for="car_num">車牌號碼：</label>
-        <input type="text" id="car_num" name="car_num" required><br>
+        <input type="text" id="car_num" name="car_num" required><br><br>
 
         <button type="submit">註冊</button>
-        {% with messages = get_flashed_messages() %}
+        <br>{% with messages = get_flashed_messages() %}
         {% if messages %}
             <ul class="flash-messages">
             {% for message in messages %}
@@ -37,8 +40,7 @@
         {% endwith %}
     </form>
     <a href="{{ url_for('auth.register') }}">
-        <button>返回
-        </button>
+        <button>返回</button>
     </a>
 </body>
 </html>

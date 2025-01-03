@@ -31,9 +31,11 @@ def login():
                 print(rest_id['rest_id'])
                 return redirect(url_for('restaurant.host_res'))
             else:
-                return "未知角色，請聯繫管理員。", 400
+                flash("未知角色，請聯繫管理員。")
+                
         else:
-            return redirect('auth.login')
+            flash("登入失敗，請重新登入")
+            return redirect(url_for('auth.login'))
 
     # GET 方法時顯示登入頁面
     return render_template('login.html')

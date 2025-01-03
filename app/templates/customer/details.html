@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="\static\css\style.css">
     <title>訂單詳情</title>
     
 </head>
 <body>
-    <h1>訂單詳情</h1>
+    <header>
+        <h1>訂單詳情</h1>
+    </header>
     {% with messages = get_flashed_messages() %}
     {% if messages %}
         <ul>
@@ -43,7 +45,7 @@
     </table>
     <div style="text-align: center; margin-top: 20px;">
     {% if comment.order_id is none and comment.status == 'completed' %}  
-        <a href="{{ url_for('customer.evaluate', order_id=order_id) }}">給個評價唄</a>
+        <button><a href="{{ url_for('customer.evaluate', order_id=order_id) }}">給個評價唄</a></button>
     {% endif %}
       
     </div>
@@ -51,5 +53,6 @@
     <p style="text-align: center; margin-top: 20px;">目前沒有任何訂單。</p>
 {% endif %}
 <a href="{{url_for('customer.orderhistory') }}">返回</a>
+
 </body>
 </html>

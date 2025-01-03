@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>登入</title>
+    <link rel="stylesheet" href="..\static\css\style.css">
 </head>
 <body>
     <h1>登入</h1>
@@ -16,7 +17,7 @@
             </ul>
         {% endif %}
         {% endwith %}
-    <form method="POST" action="{{ url_for('auth.login') }}">
+    <form class="menu-form" method="POST" action="{{ url_for('auth.login') }}">
         <label for="username">帳號：</label>
         <input type="text" id="username" name="username" required>
         <br>

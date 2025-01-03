@@ -4,9 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>商家應收金額</title>
+    <link rel="stylesheet" href="..\static\css\style.css">
 </head>
+</head>
+<style>
+    /* tr 和 td 的樣式 */
+tr {
+    border-bottom: 1px solid #ddd; /* 添加底部邊框，讓每行分隔 */
+}
+/* 當表格行懸停時，添加背景色 */
+tr:hover {
+    background-color: #f9f9f9; /* 懸停時背景顏色 */
+}
+/* 為第一列添加底色 */
+tr:first-child {
+    background-color: #f8b87c; /* 設置第一列底色 */
+    color: #fff; /* 設置文字顏色 */
+    padding: 15px; /* 增加欄位的內邊距 */
+    font-size: 18px; /* 增大字體 */
+    font-weight: bold; /* 使文字更突出 */
+
+}
+tr:first-child:hover {
+    background-color: #f8b87c; /* 懸停時背景顏色 */
+}
+
+td {
+    padding: 12px; /* 增加內邊距 */
+    text-align: left; /* 左對齊文字 */
+    color: #353589; /* 設置文字顏色 */
+    font-size: 16px; /* 字體大小 */
+    border: 1px solid #ddd; /* 每個單元格邊框 */
+}
+
+</style>
 <body>
-    <h1>商家應收金額</h1>
+    <header>
+        <h1>商家應收金額</h1>
+    </header>
+    
     <!-- 排序功能 -->
     <form method="get" action="{{ url_for('platform.merchant_earnings') }}">
         <label for="order_by">排序條件：</label>

@@ -145,7 +145,9 @@ def confirm_order():
     print(cart)
     if not cart:
         flash('購物車為空，請重新選擇餐點。')
-        return redirect(url_for(f'menu?id={restaurant_id}'))
+        #return redirect(url_for(f'menu?id={restaurant_id}'))
+        return redirect(url_for('customer.menu',id=restaurant_id))
+    #{{ url_for('customer.menu' }}
 
     # 傳遞整個 cart 給 get_order_details
     order_details = get_order_details(cart)

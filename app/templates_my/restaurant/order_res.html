@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>餐廳訂單</title>
+    <!-- <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f4f4f4;
+            color: #333;
+            font-weight: bold;
+        }
+        .total, .address, .order-time {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+        .highlight {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+    </style> -->
+</head>
+<body>
+    <div class="container">
+        <h1>餐廳訂單</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>菜品</th>
+                    <th>數量</th>
+                    <th>單價 (NT$)</th>
+                    <th>小計 (NT$)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>招牌牛肉麵</td>
+                    <td>2</td>
+                    <td>150</td>
+                    <td>300</td>
+                </tr>
+                <tr>
+                    <td>水餃 (10顆)</td>
+                    <td>1</td>
+                    <td>100</td>
+                    <td>100</td>
+                </tr>
+                <tr>
+                    <td>珍珠奶茶</td>
+                    <td>3</td>
+                    <td>50</td>
+                    <td>150</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="total">總價: <span class="highlight">NT$ 550</span></div>
+        <div class="address">送餐地址: <span class="highlight">台北市信義區松高路 101 號</span></div>
+        <div class="order-time">下訂時間: <span class="highlight" id="orderTime"></span></div>
+        <a href="order_res_list.html" class="back-button">返回</a>
+    </div>
+
+    <script>
+        // 顯示下訂單的時間
+        const orderTimeElement = document.getElementById('orderTime');
+        const now = new Date();
+        const formattedTime = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')} ` +
+                              `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
+        orderTimeElement.textContent = formattedTime;
+    </script>
+</body>
+</html>

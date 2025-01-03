@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="..\static\css\style.css">
     <title>菜單</title>
     
 </head>
 <body>
-    <h1>菜品列表</h1>
+    <header>
+        <h1>菜品列表</h1>
+    </header>    
     {% with messages = get_flashed_messages() %}
     {% if messages %}
-        <ul>
+        <ul><br>
             {% for message in messages %}
                 <li>{{ message }}</li>
             {% endfor %}
@@ -50,8 +52,9 @@
             </tr> 
             {% endfor %}
         </tbody>
-    </table>
+    </table><br>
     <button type="submit">下單</button>
 </form>
+
 </body>
 </html>

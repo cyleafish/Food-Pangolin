@@ -29,8 +29,6 @@ def index():
 
 @platform_bp.route('/merchant_earnings')
 def merchant_earnings():
-
-
     order_by = request.args.get('order_by', 'rest_id')
     results = fetch_merchant_earnings(order_by)
 
