@@ -3,7 +3,8 @@ from functools import wraps
 from app.dbUtils.customer_dbUtils import (compare, register_user,
 register_account, getUser, getCustomer, get_restaurants, get_menu_items, 
 get_order_details, add_order, get_order_history, get_details, insert_comment,
-get_restname,get_ordering,get_restid,if_comment,update_order_status)
+get_restname,get_ordering,get_restid,if_comment,update_order_status,
+rest_reviews,rest_id_to_name)
 
 # 創建 Blueprint
 customer_bp = Blueprint('customer', __name__, template_folder='../templates/customer')
@@ -114,12 +115,13 @@ def customer():
 @customer_bp.route('/menu', methods=['GET'])
 def menu():
     rest_id = request.args.get('id')
+    restname=rest_id_to_name(rest_id)
     if not rest_id:
         flash('請選擇餐廳後再進入菜單頁面。')
         return redirect(url_for('customer'))
     session['restaurant_id'] = rest_id  # 存入 session
     menu_items = get_menu_items(rest_id)
-    return render_template('menu_restaurant.html', menu_items=menu_items, restaurant=rest_id)
+    return render_template('menu_restaurant.html', menu_items=menu_items, restaurant=rest_id,restname=restname)
 
 @customer_bp.route('/confirm', methods=['GET', 'POST'])
 def confirm_order():
@@ -220,3 +222,12 @@ def evaluate(order_id):
         flash('評論提交成功！')
         return redirect(url_for('customer.order_details',order_id=order_id))
     return render_template('evaluate.html', order_id=order_id, rest_name=rest_name['restname'], customer_id=customer_id)
+
+@customer_bp.route('/reviews/<int:rest_id>', methods=['GET'])
+@login_required
+def reviews(rest_id):
+    
+    reviews = rest_reviews(rest_id)  
+    restaurant_name=rest_id_to_name(rest_id)
+    return render_template('reviews.html', reviews=reviews, restaurant_name=restaurant_name,rest_id=rest_id)
+

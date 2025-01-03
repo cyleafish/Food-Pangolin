@@ -272,3 +272,25 @@ def update_order_status(order_id, new_status):
     connection.close()
     
     return success
+
+def rest_reviews(rest_id):
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+    query = """SELECT c.name, com.star, com.comment, com.data 
+    FROM comment com 
+    LEFT JOIN `customer` c ON c.customer_id = com.customer_id
+    WHERE rest_id = %s 
+    ORDER BY com.data  DESC;"""
+
+    cursor.execute(query, (rest_id,))
+    reviews = cursor.fetchall()
+    return reviews
+
+def rest_id_to_name(rest_id):
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+    query = """SELECT restname FROM `restaurant` where rest_id=%s;"""
+
+    cursor.execute(query, (rest_id,))
+    reviews = cursor.fetchall()
+    return reviews[0]['restname']

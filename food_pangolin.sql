@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2025-01-01 16:17:00
+-- 產生時間： 2025-01-03 18:22:18
 -- 伺服器版本： 10.4.32-MariaDB
 -- PHP 版本： 8.2.12
 
@@ -42,7 +42,11 @@ CREATE TABLE `comment` (
 --
 
 INSERT INTO `comment` (`comment_id`, `rest_id`, `customer_id`, `order_id`, `star`, `comment`, `data`) VALUES
-(8, 1, 2, 11, 5, '123', '2025-01-01');
+(8, 1, 2, 11, 5, '123', '2025-01-01'),
+(11, 1, 2, 20, 5, '耶', '2025-01-03'),
+(12, 1, 2, 21, 5, '好吃', '2025-01-03'),
+(13, 1, 2, 19, 5, 'great', '2025-01-03'),
+(14, 1, 2, 33, 5, 'good', '2025-01-03');
 
 -- --------------------------------------------------------
 
@@ -65,7 +69,8 @@ CREATE TABLE `customer` (
 INSERT INTO `customer` (`customer_id`, `name`, `phone`, `addr`, `email`) VALUES
 (1, 'kuo', '0912345678', '南投縣埔里鎮大學路1號', 'kuo@gmail.com'),
 (2, 'a', '0565481254', '南投縣埔里鎮光明巷6號', '123@gmail.com'),
-(4, 'me', '0254636587', '清新里 南投縣埔里鎮', '1234@gmail.com');
+(4, 'me', '0254636587', '清新里 南投縣埔里鎮', '1234@gmail.com'),
+(5, 'Shuo', '933769077', '地球村', 'Earth@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -101,7 +106,9 @@ INSERT INTO `customer_star` (`start_id`, `customer_id`, `deliver_id`, `star`, `o
 (31, 2, 1, 5, 17),
 (32, 2, 1, 5, 18),
 (33, 2, 1, 5, 19),
-(34, 2, 1, 5, 20);
+(34, 2, 1, 5, 20),
+(36, 2, 1, 5, 29),
+(37, 2, 1, 5, 33);
 
 -- --------------------------------------------------------
 
@@ -126,7 +133,8 @@ INSERT INTO `deliver` (`deliver_id`, `deliver_name`, `phone`, `car_num`) VALUES
 (3, 'aaa', 'aaa', 'aaa'),
 (4, 'ccc', 'ccc', 'ccc'),
 (5, 'q', '0915212547', 'qqq-5584'),
-(6, 'go', '0954123698', 'LMK-2514');
+(6, 'go', '0954123698', 'LMK-2514'),
+(7, 'Del', '4837489', '11111');
 
 -- --------------------------------------------------------
 
@@ -169,8 +177,12 @@ CREATE TABLE `menu` (
 --
 
 INSERT INTO `menu` (`menu_id`, `rest_id`, `name`, `price`, `description`, `filename`) VALUES
-(1, 1, '大麥克', 80, '牛肉', '大麥克.jpg'),
-(2, 1, '薯條', 40, '有鹽', '薯條.jpg');
+(1, 1, '大麥克克', 80, '牛肉', '大麥克.jpg'),
+(2, 1, '薯條', 40, '有鹽', '薯條.jpg'),
+(6, 3, '泡芙', 60, '綠色的', '20170326235625_53.jpg'),
+(7, 2, '全家統', 899, '6隻', 'Food_09.png'),
+(8, 1, '雞塊', 79, '有糖醋醬', '雞塊.jpg'),
+(9, 1, '紅茶', 200, '123', 'proxy.png');
 
 -- --------------------------------------------------------
 
@@ -198,7 +210,7 @@ INSERT INTO `order` (`order_id`, `customer_id`, `rest_id`, `total_price`, `date`
 (1, 1, 1, 80, '2024-12-16 00:00:00', 1, '南投縣埔里鎮大學路1號', 'completed', '2024-12-30 21:19:25'),
 (2, 1, 1, 160, '2024-12-17 00:00:00', 1, '我家', 'completed', '2024-12-21 17:15:40'),
 (3, 1, 1, 80, '2024-12-17 22:53:37', 1, '這裡', 'completed', '2024-12-21 17:29:35'),
-(4, 1, 1, 120, '2024-12-17 23:42:21', 1, '那裡', 'completed', '2024-12-21 17:16:43'),
+(4, 1, 1, 120, '2024-12-17 23:42:21', 1, '那裡', 'arrived', '2024-12-21 17:16:43'),
 (5, 1, 1, 160, '2024-12-18 11:30:22', 1, '管院', 'completed', '2024-12-21 17:13:29'),
 (11, 2, 1, 80, '2024-12-30 15:56:43', 1, '南投縣埔里鎮光明巷6號', 'completed', '2024-12-30 21:29:34'),
 (12, 2, 1, 80, '2024-12-30 15:58:13', 1, '南投縣埔里鎮光明巷6號', 'completed', '2024-12-30 21:29:41'),
@@ -211,9 +223,18 @@ INSERT INTO `order` (`order_id`, `customer_id`, `rest_id`, `total_price`, `date`
 (19, 2, 1, 80, '2024-12-30 22:05:21', 1, '南投縣埔里鎮光明巷6號', 'completed', '2024-12-30 22:16:46'),
 (20, 2, 1, 40, '2024-12-30 22:05:31', 1, '南投縣埔里鎮光明巷6號', 'completed', '2025-01-01 23:16:19'),
 (21, 2, 1, 120, '2024-12-30 22:13:01', 1, '南投縣埔里鎮光明巷6號', 'completed', '2024-12-30 22:14:11'),
-(22, 2, 1, 40, '2024-12-30 23:21:02', NULL, '南投縣埔里鎮光明巷6號', 'order', NULL),
-(23, 2, 1, 40, '2024-12-30 23:32:49', NULL, '南投縣埔里鎮光明巷6號', 'order', NULL),
-(24, 2, 1, 80, '2024-12-31 00:24:01', NULL, '南投縣埔里鎮光明巷6號', 'order', NULL);
+(22, 2, 1, 40, '2024-12-30 23:21:02', 1, '南投縣埔里鎮光明巷6號', 'accepted', NULL),
+(23, 2, 1, 40, '2024-12-30 23:32:49', NULL, '南投縣埔里鎮光明巷6號', 'pending', NULL),
+(24, 2, 1, 80, '2024-12-31 00:24:01', 1, '南投縣埔里鎮光明巷6號', 'accepted', NULL),
+(25, 2, 1, 80, '2025-01-03 10:17:27', NULL, '南投縣埔里鎮光明巷6號', 'order', NULL),
+(26, 2, 1, 80, '2025-01-03 10:18:07', NULL, '南投縣埔里鎮光明巷6號', 'order', NULL),
+(27, 2, 1, 80, '2025-01-03 10:18:51', NULL, '南投縣埔里鎮光明巷6號', 'order', NULL),
+(28, 2, 1, 80, '2025-01-03 10:19:29', NULL, '南投縣埔里鎮光明巷6號', 'order', NULL),
+(29, 2, 1, 80, '2024-12-30 21:31:36', 1, '南投縣埔里鎮光明巷6號', 'completed', '2025-01-03 14:25:04'),
+(30, 2, 1, 200, '2025-01-03 13:53:07', NULL, '南投縣埔里鎮光明巷6號', 'cancelled', NULL),
+(31, 2, 2, 1798, '2025-01-03 14:27:17', NULL, '南投縣埔里鎮光明巷6號', 'pending', NULL),
+(32, 2, 3, 120, '2025-01-03 14:27:52', NULL, '南投縣埔里鎮光明巷6號', 'pending', NULL),
+(33, 2, 1, 199, '2025-01-03 16:02:57', 1, '南投縣埔里鎮光明巷6號', 'completed', '2025-01-03 16:09:25');
 
 -- --------------------------------------------------------
 
@@ -255,7 +276,18 @@ INSERT INTO `order_item` (`item_id`, `order_id`, `menu_id`, `quantity`, `price`,
 (18, 21, 2, 1, 40, ''),
 (19, 22, 2, 1, 40, ''),
 (20, 23, 2, 1, 40, ''),
-(21, 24, 1, 1, 80, '');
+(21, 24, 1, 1, 80, ''),
+(22, 25, 1, 1, 80, '嗨嗨嗨'),
+(23, 26, 1, 1, 80, ''),
+(24, 27, 1, 1, 80, ''),
+(25, 28, 1, 1, 80, ''),
+(26, 30, 1, 1, 80, '嗨'),
+(27, 30, 2, 3, 40, '呵'),
+(28, 31, 7, 2, 899, ''),
+(29, 32, 6, 2, 60, ''),
+(30, 33, 1, 1, 80, ''),
+(31, 33, 2, 1, 40, '無鹽'),
+(32, 33, 8, 1, 79, '');
 
 -- --------------------------------------------------------
 
@@ -277,9 +309,10 @@ CREATE TABLE `restaurant` (
 --
 
 INSERT INTO `restaurant` (`rest_id`, `user_id`, `restname`, `addr`, `phone`, `time`) VALUES
-(1, 1, 'McDonald', '南投縣埔里鎮信義路1037號', '0492918438', '2024-12-16'),
+(1, 1, 'McDonald', '南投縣埔里鎮信義路1037號', '04929184380', '2024-12-16'),
 (2, 10, 'kfc', '東門里 南投縣埔里鎮', '0492997651', '2024-12-23'),
-(3, 12, 'feeling18', '南投縣埔里鎮慈恩街20號', '0492984863', '2024-12-23');
+(3, 12, 'feeling18', '南投縣埔里鎮慈恩街20號', '0492984863', '2024-12-23'),
+(4, 16, 'Res', '月球', '266663', '2025-01-03');
 
 -- --------------------------------------------------------
 
@@ -312,7 +345,10 @@ INSERT INTO `user_account` (`user_id`, `username`, `password`, `role`, `created_
 (10, 'kfc', 'kfc', 'restaurant', '2024-12-23 04:39:37'),
 (12, 'feeling18', 'feeling18', 'restaurant', '2024-12-23 05:19:35'),
 (13, 'me', 'me', 'customer', '2024-12-23 05:30:14'),
-(14, 'go', 'go', 'deliver', '2024-12-23 05:30:58');
+(14, 'go', 'go', 'deliver', '2024-12-23 05:30:58'),
+(15, 'Shuo', 'Shuo', 'customer', '2025-01-03 05:57:05'),
+(16, 'Res', 'Res', 'restaurant', '2025-01-03 06:10:37'),
+(17, 'Del', 'Del', 'deliver', '2025-01-03 06:11:25');
 
 --
 -- 已傾印資料表的索引
@@ -400,55 +436,55 @@ ALTER TABLE `user_account`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `customer_star`
 --
 ALTER TABLE `customer_star`
-  MODIFY `start_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `start_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `deliver`
 --
 ALTER TABLE `deliver`
-  MODIFY `deliver_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `deliver_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `menu_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `menu_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `order`
 --
 ALTER TABLE `order`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `order_item`
 --
 ALTER TABLE `order_item`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `restaurant`
 --
 ALTER TABLE `restaurant`
-  MODIFY `rest_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `rest_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `user_account`
 --
 ALTER TABLE `user_account`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- 已傾印資料表的限制式

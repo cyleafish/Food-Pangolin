@@ -9,7 +9,8 @@
 </head>
 <body>
     <header>
-        <h1>菜品列表</h1>
+        <h1>{{ restname }} 菜品列表 </h1>
+        <a href="{{ url_for('customer.reviews',rest_id=restaurant) }}">評論</a>
     </header>    
     {% with messages = get_flashed_messages() %}
     {% if messages %}
