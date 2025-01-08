@@ -1,7 +1,8 @@
 # Food-Pangolin
 1131軟體工程期末專題  
-第十二組  
+## 第十二組  
 111213001 葉芷妤 111213012 郭方朔 111213066 蔡家生 111213070 郭于擎  
+## 最後 progect 為 Final 分支
 ![image](https://github.com/user-attachments/assets/31998aed-5cc6-4f74-ac08-30b59605d47f)
 
 
