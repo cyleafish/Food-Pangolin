@@ -51,17 +51,8 @@ Food-Pangolin/
 │       └── scripts.js
 │       ├── img.jpg # 餐廳 menu 圖
 │       ├── img.jpg
-├── config/
-│   ├── __init__.py
-│   ├── settings.py       # 設定檔案 (如資料庫帳密設定)
-│   ├── routes.py         # 路由設計
-│   └── database.py       # 初始化資料庫連線
+│       ├── ...
 │
-├── tests/
-│   ├── test_customer_controller.py
-│   ├── test_order_controller.py
-│   ├── test_feedback_flow.py
-│   └── test_order_flow.py
 │
 ├── .gitignore
 ├── README.md
