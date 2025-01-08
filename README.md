@@ -1,61 +1,56 @@
 # Food-Pangolin
 1131軟體工程期末專題  
-第十二組  
+## 第十二組  
 111213001 葉芷妤 111213012 郭方朔 111213066 蔡家生 111213070 郭于擎  
+## 最後 progect 為 Final 分支
 ![image](https://github.com/user-attachments/assets/31998aed-5cc6-4f74-ac08-30b59605d47f)
-## 筆記 https://hackmd.io/@leafish/H1a48wHHyg/edit
+
 
 ## MVC
 ```
-project/
+Food-Pangolin/
 ├── app/
 │   ├── __init__.py       # 初始化 Flask
 │   ├── controllers/
-│   │   ├── customer_controller.py
-│   │   ├── merchant_controller.py
-│   │   ├── delivery_person_controller.py
-│   │   ├── order_controller.py
-│   │   ├── feedback_controller.py
-│   │   └── menu_item_controller.py
+│   │   ├── customer_app.py
+│   │   ├── restaurant_app.py
+│   │   ├── delivery_app.py
+│   │   ├── platform_app.py
+│   │   └── auth_app.py
 │   │
-│   ├── models/
-│   │   ├── __init__.py   # 初始化 SQL 模組
-│   │   ├── customer.py
-│   │   ├── merchant.py
-│   │   ├── delivery_person.py
-│   │   ├── order.py
-│   │   ├── order_item.py
-│   │   ├── feedback.py
-│   │   └── menu_item.py
+│   ├── dbUtils/
+│   │   ├── login.py   # 統一的 function
+│   │   ├── customer_dbUtils.py
+│   │   ├── delivery_dbUtils.py
+│   │   ├── platform_dbUtils.py
+│   │   └── restaurant_dbUtils.py
 │   │
-│   ├── templates/
+│   ├── templates/ # html 檔案
 │   │   ├── customer/
-│   │   │   ├── browse_menu.html
-│   │   │   ├── place_order.html
-│   │   │   └── order_history.html
-│   │   ├── merchant/
-│   │   │   ├── dashboard.html
-│   │   │   ├── manage_menu.html
-│   │   │   └── order_list.html
-│   │   ├── delivery_person/
-│   │   │   ├── assigned_orders.html
-│   │   │   ├── update_status.html
-│   │   │   └── delivery_history.html
-│   │   └── shared/
-│   │       ├── layout.html
-│   │       └── navbar.html
+│   │   │   ├── car.html
+│   │   │   ├── ...
+│   │   │   └── reviews.html
+│   │   ├── restaurant/
+│   │   │   ├── add_menu.html
+│   │   │   ├── ...
+│   │   │   └── Restaurant_information.html
+│   │   ├── delivery/
+│   │   │   ├── deliver_home.html
+│   │   │   ├── ...
+│   │   │   └── register_deliver.html
+│   │   └── platform/
+│   │   │   ├── customer_payments.html
+│   │   │   ├── ...
+│   │   │   └── merchant_earnings.html
+│   │   ├── login.html
+│   │   └── register.html
 │   │
 │   └── static/
 │       ├── css/
-│       │   ├── style.css
-│       │   └── merchant.css
-│       ├── js/
-│       │   ├── scripts.js
-│       │   └── customer.js
-│       └── images/
-│           ├── logo.png
-│           └── banner.jpg
-│
+│       │   └── style.css
+│       └── scripts.js
+│       ├── img.jpg # 餐廳 menu 圖
+│       ├── img.jpg
 ├── config/
 │   ├── __init__.py
 │   ├── settings.py       # 設定檔案 (如資料庫帳密設定)
@@ -68,10 +63,9 @@ project/
 │   ├── test_feedback_flow.py
 │   └── test_order_flow.py
 │
-├── .env                  # 環境變數
 ├── .gitignore
 ├── README.md
-├── requirements.txt      # 版本控制
+├── food_pangolin.sql     # 資料庫檔案
 └── run.py                # 入口
 ```
 ### MVC 流程示例
